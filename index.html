@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REROUTE — Energy Supply Chain Resilience Platform</title>
+  <meta name="description" content="AI-powered platform helping businesses navigate Strait of Hormuz disruptions. Reroute your energy supply chain with intelligent route optimization, price forecasting, and decision support." />
+  <meta name="keywords" content="energy supply chain, Strait of Hormuz, route optimization, AI, energy security" />
+  <meta property="og:title" content="REROUTE — Energy Supply Chain Resilience Platform" />
+  <meta property="og:description" content="Navigate energy disruptions with AI-powered route intelligence and decision support." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2L20 12H28L22 18L24 28L16 22L8 28L10 18L4 12H12Z' fill='%23f59e0b'/></svg>" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="#hero" class="nav__logo">
+        <svg class="nav__logo-svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span class="nav__logo-text">REROUTE</span>
+      </a>
+      <div class="nav__links" id="navLinks">
+        <a href="#thesis" class="nav__link">Thesis</a>
+        <a href="#problem" class="nav__link">The Crisis</a>
+        <a href="#product" class="nav__link">Product</a>
+        <a href="#architecture" class="nav__link">Systems</a>
+        <a href="#workflows" class="nav__link">Workflows</a>
+        <a href="#gtm" class="nav__link">Go-to-Market</a>
+        <a href="#ai" class="nav__link">AI & Tech</a>
+      </div>
+      <button class="nav__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════ HERO SECTION ═══════════════════ -->
+  <section class="hero" id="hero">
+    <canvas id="globeCanvas" class="hero__canvas"></canvas>
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <div class="hero__badge reveal">
+        <span class="hero__badge-dot"></span>
+        HORMUZ DISRUPTION · ACTIVE SCENARIO
+      </div>
+      <h1 class="hero__title reveal">
+        The world's most<br/>
+        critical energy artery<br/>
+        <span class="hero__title-gradient">just went dark.</span>
+      </h1>
+      <p class="hero__subtitle reveal">
+        21% of global petroleum liquids. 25% of LNG trade. A single 33-kilometre 
+        chokepoint between Iran and Oman. When it closes, the question isn't 
+        <em>whether</em> your supply chain breaks — it's how fast you can rebuild it.
+        REROUTE is the operating system for that response.
+      </p>
+      <div class="hero__cta reveal">
+        <a href="#thesis" class="btn btn--primary">Read the Thesis</a>
+        <a href="#product" class="btn btn--ghost">See the Product →</a>
+      </div>
+      <div class="hero__stats reveal">
+        <div class="hero__stat">
+          <span class="hero__stat-number" data-target="20">0</span><span class="hero__stat-suffix">M</span>
+          <span class="hero__stat-label">barrels/day at risk</span>
+        </div>
+        <div class="hero__stat-divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-number" data-target="20">0</span><span class="hero__stat-suffix">%</span>
+          <span class="hero__stat-label">of global LNG transits</span>
+        </div>
+        <div class="hero__stat-divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-number" data-target="10">0</span><span class="hero__stat-suffix">M</span>
+          <span class="hero__stat-label">bpd pipeline bypass max</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero__scroll-indicator">
+      <span>Scroll to explore</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ THESIS SECTION ═══════════════════ -->
+  <section class="section section--thesis" id="thesis">
+    <div class="container">
+      <div class="thesis reveal">
+        <div class="thesis__label">Our Thesis</div>
+        <blockquote class="thesis__quote">
+          The problem with Hormuz isn't geography.<br/>It's <em>decision latency</em>.
+        </blockquote>
+        <div class="thesis__body">
+          <p>We've studied every major energy chokepoint disruption since the 1967 Suez closure. The pattern is consistent: the companies that survive aren't the ones with the most reserves. They're the ones that <strong>make the right decisions in the first 72 hours</strong>.</p>
+          <p>During the 1984 Tanker War, Iranian attacks on shipping in the Gulf caused a 25% spike in marine insurance premiums overnight. Yet the price of crude barely moved for the first week — because the market couldn't process the signal. The same pattern emerged in September 2019, when drone strikes on Abqaiq-Khurais knocked out 5.7 million barrels per day of Saudi capacity. Brent spiked 15% at the Monday open, but the real damage was downstream: refiners in India and South Korea scrambled for alternatives, paying $3–5/bbl premiums on spot cargoes that wouldn't arrive for weeks.</p>
+          <p>The lesson: <strong>the cost of disruption isn't the price of oil. It's the cost of not knowing what to do next.</strong></p>
+          <p>REROUTE exists to eliminate that latency. We fuse vessel tracking, pipeline telemetry, commodity pricing, and contract data into a single decision surface — and put an AI copilot on top that can reason about your specific supply chain in minutes, not days.</p>
+        </div>
+        <div class="thesis__precedents">
+          <div class="thesis__precedent-label">Historical precedents that shaped our thinking</div>
+          <div class="thesis__precedents-grid">
+            <div class="precedent-card">
+              <div class="precedent__year">1967</div>
+              <div class="precedent__event">Suez Canal closure</div>
+              <div class="precedent__detail">8-year closure forced development of supertankers and the Cape route. Global shipping was permanently restructured.</div>
+            </div>
+            <div class="precedent-card">
+              <div class="precedent__year">1984</div>
+              <div class="precedent__event">Tanker War (Iran-Iraq)</div>
+              <div class="precedent__detail">546 vessels attacked over 4 years. Marine insurance rates increased 25x. The "tanker reflagging" era began.</div>
+            </div>
+            <div class="precedent-card">
+              <div class="precedent__year">2019</div>
+              <div class="precedent__event">Abqaiq-Khurais attack</div>
+              <div class="precedent__detail">5.7M bpd knocked offline in hours. Largest single supply disruption in history. Full recovery took ~2 weeks.</div>
+            </div>
+            <div class="precedent-card">
+              <div class="precedent__year">2024</div>
+              <div class="precedent__event">Houthi Red Sea attacks</div>
+              <div class="precedent__detail">60%+ drop in Suez transit volume. Rerouting via Cape added $1M+ per voyage. Insurance premiums surged 10x.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PROBLEM SECTION ═══════════════════ -->
+  <section class="section section--problem" id="problem">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__label">The Crisis</span>
+        <h2 class="section__title">A Chokepoint That Controls<br/><span class="text-gradient">Global Energy Flow</span></h2>
+        <p class="section__desc">The Strait of Hormuz — just 33km wide at its narrowest — carries one-fifth of the world's oil. When it's disrupted, the cascading effects are immediate and global.</p>
+      </div>
+
+      <div class="problem__grid">
+        <div class="problem__card problem__card--large reveal">
+          <div class="problem__card-inner">
+            <div class="problem__card-icon"><i data-lucide="waves"></i></div>
+            <h3>The Chokepoint</h3>
+            <p>Two shipping lanes, each 3km wide, separated by a 3km buffer. Tankers transiting at 12–15 knots have roughly 30 minutes of exposure. Iran's coastline runs along the northern edge; Oman's Musandam Peninsula borders the south. At current throughput, a single day's closure removes ~20M barrels from the global supply equation.<sup>1</sup></p>
+            <div class="problem__card-stat">
+              <span class="problem__stat-big">~21%</span>
+              <span class="problem__stat-label">of global petroleum liquids</span>
+            </div>
+          </div>
+        </div>
+        <div class="problem__card reveal">
+          <div class="problem__card-inner">
+            <div class="problem__card-icon"><i data-lucide="trending-up"></i></div>
+            <h3>Price Shock</h3>
+            <p>Brent-Dubai spread widens immediately. JKM LNG spot can double within a week. Asian refinery margins — already thin at $4–6/bbl — go negative. Platts and Argus assessments become unreliable as physical markets seize up.<sup>2</sup></p>
+          </div>
+        </div>
+        <div class="problem__card reveal">
+          <div class="problem__card-inner">
+            <div class="problem__card-icon"><i data-lucide="ship"></i></div>
+            <h3>Route Fragmentation</h3>
+            <p>The Petroline (East-West) offers 7M bpd to Yanbu — but Yanbu's jetty capacity can only load ~4M bpd of tankers simultaneously. ADCOP to Fujairah bypasses Hormuz entirely but maxes at 1.8M bpd. The arithmetic doesn't close.<sup>3</sup></p>
+          </div>
+        </div>
+        <div class="problem__card reveal">
+          <div class="problem__card-inner">
+            <div class="problem__card-icon"><i data-lucide="file-warning"></i></div>
+            <h3>Contract Cascade</h3>
+            <p>FOB Ras Tanura contracts invoke force majeure. CIF buyers scramble for DES alternatives. Demurrage claims stack up at $40,000–80,000/day per VLCC. War risk insurance premiums jump from 0.05% to 3%+ of hull value overnight.</p>
+          </div>
+        </div>
+        <div class="problem__card reveal">
+          <div class="problem__card-inner">
+            <div class="problem__card-icon"><i data-lucide="timer"></i></div>
+            <h3>The 72-Hour Window</h3>
+            <p>IEA member states hold ~1.2 billion barrels in strategic reserves — roughly 90 days at normal draw. But SPR releases take 13–15 days to reach the market. The gap between disruption and relief is where fortunes are made or lost.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second-order effects -->
+      <div class="second-order reveal">
+        <h3 class="second-order__title">What most analyses miss: the second-order effects</h3>
+        <div class="second-order__grid">
+          <div class="second-order__item">
+            <div class="second-order__num">01</div>
+            <div class="second-order__content">
+              <h4>Fleet redistribution</h4>
+              <p>VLCCs rerouting via Cape of Good Hope need 30% more voyage days. This effectively removes ~15% of global tanker capacity from the market — causing freight rates to spike even for non-Hormuz routes.</p>
+            </div>
+          </div>
+          <div class="second-order__item">
+            <div class="second-order__num">02</div>
+            <div class="second-order__content">
+              <h4>Refinery yield mismatch</h4>
+              <p>Asian refineries optimized for Arab Medium/Heavy crude can't simply switch to West African or North Sea light sweet grades. Reconfiguring catalytic crackers takes 2–4 weeks and reduces throughput by 10–20%.</p>
+            </div>
+          </div>
+          <div class="second-order__item">
+            <div class="second-order__num">03</div>
+            <div class="second-order__content">
+              <h4>Petrochemical feedstock crisis</h4>
+              <p>Qatar supplies ~30% of global helium and significant ethane/propane feedstock. A Hormuz closure doesn't just affect fuel — it disrupts semiconductor manufacturing, medical equipment, and plastics production globally.</p>
+            </div>
+          </div>
+          <div class="second-order__item">
+            <div class="second-order__num">04</div>
+            <div class="second-order__content">
+              <h4>Cascading insurance failure</h4>
+              <p>Lloyd's market war risk pools have finite capacity. Once claims exceed pool limits, P&I clubs withdraw coverage entirely. Vessels become uninsurable. Trade stops not because routes are blocked, but because no one will underwrite the voyage.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alternative routes visualization -->
+      <div class="routes-overview reveal">
+        <h3 class="routes-overview__title">Existing Bypass Capacity vs. Strait Volume</h3>
+        <div class="routes-overview__chart">
+          <div class="route-bar">
+            <div class="route-bar__label">Strait of Hormuz (daily)</div>
+            <div class="route-bar__track">
+              <div class="route-bar__fill route-bar__fill--hormuz" style="--target-width: 100%">
+                <span>~20M bpd</span>
+              </div>
+            </div>
+          </div>
+          <div class="route-bar">
+            <div class="route-bar__label">East-West Pipeline (Saudi)</div>
+            <div class="route-bar__track">
+              <div class="route-bar__fill route-bar__fill--pipeline" style="--target-width: 35%">
+                <span>~7M bpd</span>
+              </div>
+            </div>
+          </div>
+          <div class="route-bar">
+            <div class="route-bar__label">ADCOP Pipeline (UAE)</div>
+            <div class="route-bar__track">
+              <div class="route-bar__fill route-bar__fill--pipeline" style="--target-width: 9%">
+                <span>~1.8M bpd</span>
+              </div>
+            </div>
+          </div>
+          <div class="route-bar">
+            <div class="route-bar__label">Kirkuk-Ceyhan (Iraq-Turkey)</div>
+            <div class="route-bar__track">
+              <div class="route-bar__fill route-bar__fill--pipeline" style="--target-width: 1.25%">
+                <span>~0.25M bpd</span>
+              </div>
+            </div>
+          </div>
+          <div class="route-bar">
+            <div class="route-bar__label">Cape of Good Hope (maritime)</div>
+            <div class="route-bar__track">
+              <div class="route-bar__fill route-bar__fill--maritime" style="--target-width: 50%">
+                <span>Unlimited but +15 days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="routes-overview__gap">
+          <div class="gap-indicator">
+            <span class="gap-indicator__label">CAPACITY GAP</span>
+            <span class="gap-indicator__value">~10M bpd shortfall</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PRODUCT SECTION ═══════════════════ -->
+  <section class="section section--product" id="product">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__label">The Product</span>
+        <h2 class="section__title">Four Modules.<br/><span class="text-gradient">One Resilient Supply Chain.</span></h2>
+        <p class="section__desc">REROUTE gives energy-dependent businesses the intelligence and tools to rapidly adapt when critical routes are disrupted.</p>
+      </div>
+
+      <!-- Product tabs -->
+      <div class="product-tabs reveal">
+        <div class="product-tabs__nav">
+          <button class="product-tab active" data-tab="exposure" id="tab-exposure">
+            <span class="product-tab__icon"><i data-lucide="scan-search"></i></span>
+            <span class="product-tab__label">Exposure Scanner</span>
+          </button>
+          <button class="product-tab" data-tab="routes" id="tab-routes">
+            <span class="product-tab__icon"><i data-lucide="map-pin"></i></span>
+            <span class="product-tab__label">Route Intelligence</span>
+          </button>
+          <button class="product-tab" data-tab="pricing" id="tab-pricing">
+            <span class="product-tab__icon"><i data-lucide="chart-candlestick"></i></span>
+            <span class="product-tab__label">AI Price Engine</span>
+          </button>
+          <button class="product-tab" data-tab="copilot" id="tab-copilot">
+            <span class="product-tab__icon"><i data-lucide="bot"></i></span>
+            <span class="product-tab__label">Decision Copilot</span>
+          </button>
+        </div>
+
+        <!-- Exposure Scanner Screen -->
+        <div class="product-screen active" id="screen-exposure">
+          <div class="screen-mockup">
+            <div class="screen-mockup__bar">
+              <div class="screen-mockup__dots"><span></span><span></span><span></span></div>
+              <div class="screen-mockup__title">REROUTE — Exposure Scanner</div>
+            </div>
+            <div class="screen-mockup__body">
+              <div class="mock-dashboard">
+                <!-- Top bar -->
+                <div class="mock-topbar">
+                  <div class="mock-topbar__left">
+                    <span class="mock-alert-badge pulse">⚠️ ACTIVE DISRUPTION — Strait of Hormuz</span>
+                  </div>
+                  <div class="mock-topbar__right">
+                    <span class="mock-chip">Last updated: 2 min ago</span>
+                  </div>
+                </div>
+                <!-- Exposure metrics row -->
+                <div class="mock-metrics">
+                  <div class="mock-metric-card mock-metric-card--danger">
+                    <div class="mock-metric__label">Total Exposure</div>
+                    <div class="mock-metric__value">73%</div>
+                    <div class="mock-metric__sub">of supply Hormuz-dependent</div>
+                    <div class="mock-metric__bar"><div class="mock-metric__bar-fill" style="width:73%; background: var(--danger);"></div></div>
+                  </div>
+                  <div class="mock-metric-card mock-metric-card--warning">
+                    <div class="mock-metric__label">Contracts at Risk</div>
+                    <div class="mock-metric__value">14</div>
+                    <div class="mock-metric__sub">active contracts affected</div>
+                    <div class="mock-metric__bar"><div class="mock-metric__bar-fill" style="width:56%; background: var(--warning);"></div></div>
+                  </div>
+                  <div class="mock-metric-card mock-metric-card--info">
+                    <div class="mock-metric__label">Volume at Risk</div>
+                    <div class="mock-metric__value">2.4M</div>
+                    <div class="mock-metric__sub">barrels in transit</div>
+                    <div class="mock-metric__bar"><div class="mock-metric__bar-fill" style="width:48%; background: var(--accent);"></div></div>
+                  </div>
+                  <div class="mock-metric-card">
+                    <div class="mock-metric__label">Est. Cost Impact</div>
+                    <div class="mock-metric__value">$182M</div>
+                    <div class="mock-metric__sub">projected 30-day impact</div>
+                    <div class="mock-metric__bar"><div class="mock-metric__bar-fill" style="width:82%; background: var(--danger);"></div></div>
+                  </div>
+                </div>
+                <!-- Supply chain map + breakdown -->
+                <div class="mock-split">
+                  <div class="mock-panel mock-panel--map">
+                    <div class="mock-panel__header">
+                      <h4>Supply Chain Dependency Map</h4>
+                      <span class="mock-chip mock-chip--small">Live</span>
+                    </div>
+                    <div class="mock-map" id="exposureMap">
+                      <canvas id="exposureMapCanvas"></canvas>
+                    </div>
+                  </div>
+                  <div class="mock-panel mock-panel--list">
+                    <div class="mock-panel__header">
+                      <h4>Supplier Exposure Breakdown</h4>
+                    </div>
+                    <div class="mock-supplier-list">
+                      <div class="mock-supplier mock-supplier--critical">
+                        <div class="mock-supplier__info">
+                          <span class="mock-supplier__name">Saudi Aramco</span>
+                          <span class="mock-supplier__route">via Ras Tanura → Hormuz</span>
+                        </div>
+                        <div class="mock-supplier__risk">
+                          <span class="risk-badge risk-badge--critical">CRITICAL</span>
+                          <span>1.2M bpd</span>
+                        </div>
+                      </div>
+                      <div class="mock-supplier mock-supplier--critical">
+                        <div class="mock-supplier__info">
+                          <span class="mock-supplier__name">ADNOC (UAE)</span>
+                          <span class="mock-supplier__route">via Jebel Ali → Hormuz</span>
+                        </div>
+                        <div class="mock-supplier__risk">
+                          <span class="risk-badge risk-badge--critical">CRITICAL</span>
+                          <span>480K bpd</span>
+                        </div>
+                      </div>
+                      <div class="mock-supplier mock-supplier--warning">
+                        <div class="mock-supplier__info">
+                          <span class="mock-supplier__name">Kuwait Petroleum</span>
+                          <span class="mock-supplier__route">via Mina al-Ahmadi → Hormuz</span>
+                        </div>
+                        <div class="mock-supplier__risk">
+                          <span class="risk-badge risk-badge--warning">HIGH</span>
+                          <span>340K bpd</span>
+                        </div>
+                      </div>
+                      <div class="mock-supplier mock-supplier--moderate">
+                        <div class="mock-supplier__info">
+                          <span class="mock-supplier__name">QatarEnergy (LNG)</span>
+                          <span class="mock-supplier__route">via Ras Laffan → Hormuz</span>
+                        </div>
+                        <div class="mock-supplier__risk">
+                          <span class="risk-badge risk-badge--warning">HIGH</span>
+                          <span>220K bpd eq.</span>
+                        </div>
+                      </div>
+                      <div class="mock-supplier mock-supplier--safe">
+                        <div class="mock-supplier__info">
+                          <span class="mock-supplier__name">Equinor (Norway)</span>
+                          <span class="mock-supplier__route">via North Sea — Not affected</span>
+                        </div>
+                        <div class="mock-supplier__risk">
+                          <span class="risk-badge risk-badge--safe">SAFE</span>
+                          <span>180K bpd</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="screen-info">
+            <h3>Exposure Scanner</h3>
+            <p>Instantly map your entire supply chain against the disruption. See which contracts, suppliers, and volumes are affected — and quantify the financial impact in real-time.</p>
+            <ul class="screen-info__features">
+              <li>Automated supply chain dependency mapping</li>
+              <li>Real-time contract risk assessment</li>
+              <li>Financial impact modeling (30/60/90 day)</li>
+              <li>Supplier-level exposure breakdown with risk scoring</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Route Intelligence Screen -->
+        <div class="product-screen" id="screen-routes">
+          <div class="screen-mockup">
+            <div class="screen-mockup__bar">
+              <div class="screen-mockup__dots"><span></span><span></span><span></span></div>
+              <div class="screen-mockup__title">REROUTE — Route Intelligence</div>
+            </div>
+            <div class="screen-mockup__body">
+              <div class="mock-dashboard">
+                <div class="mock-topbar">
+                  <div class="mock-topbar__left">
+                    <span class="mock-chip">Comparing 4 alternative routes</span>
+                  </div>
+                  <div class="mock-topbar__right">
+                    <span class="mock-chip">Origin: Ras Tanura, Saudi Arabia</span>
+                    <span class="mock-chip">Dest: Jamnagar, India</span>
+                  </div>
+                </div>
+                <div class="mock-routes-grid">
+                  <div class="mock-route-card mock-route-card--recommended">
+                    <div class="mock-route__badge">AI RECOMMENDED</div>
+                    <div class="mock-route__header">
+                      <h4>East-West Pipeline → Red Sea → Suez</h4>
+                      <span class="mock-route__type">Pipeline + Maritime</span>
+                    </div>
+                    <div class="mock-route__metrics">
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Transit Time</span>
+                        <span class="mock-route__metric-value">8 days</span>
+                        <span class="mock-route__metric-delta positive">-2 days vs. original</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Cost Premium</span>
+                        <span class="mock-route__metric-value">+$3.20/bbl</span>
+                        <span class="mock-route__metric-delta">vs. $0.80 normal</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Capacity</span>
+                        <span class="mock-route__metric-value">Available</span>
+                        <span class="mock-route__metric-delta positive">2.1M bpd free</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Risk Score</span>
+                        <span class="mock-route__metric-value">Medium</span>
+                        <span class="mock-route__metric-delta">Bab el-Mandeb risk</span>
+                      </div>
+                    </div>
+                    <div class="mock-route__path">
+                      <span class="path-node">Abqaiq</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--pipeline">Pipeline</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Yanbu</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--sea">Red Sea</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Suez</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Jamnagar</span>
+                    </div>
+                  </div>
+                  <div class="mock-route-card">
+                    <div class="mock-route__header">
+                      <h4>ADCOP Pipeline → Fujairah (UAE bypass)</h4>
+                      <span class="mock-route__type">Pipeline + Maritime</span>
+                    </div>
+                    <div class="mock-route__metrics">
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Transit Time</span>
+                        <span class="mock-route__metric-value">5 days</span>
+                        <span class="mock-route__metric-delta positive">-5 days vs. original</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Cost Premium</span>
+                        <span class="mock-route__metric-value">+$2.80/bbl</span>
+                        <span class="mock-route__metric-delta">limited capacity</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Capacity</span>
+                        <span class="mock-route__metric-value">Constrained</span>
+                        <span class="mock-route__metric-delta negative">0.3M bpd free</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Risk Score</span>
+                        <span class="mock-route__metric-value">Low</span>
+                        <span class="mock-route__metric-delta positive">Bypasses Hormuz</span>
+                      </div>
+                    </div>
+                    <div class="mock-route__path">
+                      <span class="path-node">Habshan</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--pipeline">ADCOP</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Fujairah</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--sea">Arabian Sea</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Jamnagar</span>
+                    </div>
+                  </div>
+                  <div class="mock-route-card">
+                    <div class="mock-route__header">
+                      <h4>Cape of Good Hope (Full Maritime)</h4>
+                      <span class="mock-route__type">Maritime Only</span>
+                    </div>
+                    <div class="mock-route__metrics">
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Transit Time</span>
+                        <span class="mock-route__metric-value">22 days</span>
+                        <span class="mock-route__metric-delta negative">+12 days vs. original</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Cost Premium</span>
+                        <span class="mock-route__metric-value">+$8.50/bbl</span>
+                        <span class="mock-route__metric-delta negative">fuel + insurance</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Capacity</span>
+                        <span class="mock-route__metric-value">Unlimited</span>
+                        <span class="mock-route__metric-delta positive">No constraints</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Risk Score</span>
+                        <span class="mock-route__metric-value">Low</span>
+                        <span class="mock-route__metric-delta positive">Avoids all chokepoints</span>
+                      </div>
+                    </div>
+                    <div class="mock-route__path">
+                      <span class="path-node">Ras Tanura</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--sea">Indian Ocean</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Cape of Good Hope</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--sea">Atlantic</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Jamnagar</span>
+                    </div>
+                  </div>
+                  <div class="mock-route-card">
+                    <div class="mock-route__header">
+                      <h4>Kirkuk-Ceyhan Pipeline → Mediterranean</h4>
+                      <span class="mock-route__type">Pipeline + Maritime</span>
+                    </div>
+                    <div class="mock-route__metrics">
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Transit Time</span>
+                        <span class="mock-route__metric-value">14 days</span>
+                        <span class="mock-route__metric-delta negative">+4 days vs. original</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Cost Premium</span>
+                        <span class="mock-route__metric-value">+$5.40/bbl</span>
+                        <span class="mock-route__metric-delta">Iraqi crude basis</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Capacity</span>
+                        <span class="mock-route__metric-value">Very Limited</span>
+                        <span class="mock-route__metric-delta negative">0.15M bpd free</span>
+                      </div>
+                      <div class="mock-route__metric">
+                        <span class="mock-route__metric-label">Risk Score</span>
+                        <span class="mock-route__metric-value">Medium</span>
+                        <span class="mock-route__metric-delta">Geopolitical risk</span>
+                      </div>
+                    </div>
+                    <div class="mock-route__path">
+                      <span class="path-node">Kirkuk</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--pipeline">Pipeline</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Ceyhan</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node path-node--sea">Med → Suez</span>
+                      <span class="path-arrow">→</span>
+                      <span class="path-node">Jamnagar</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="screen-info">
+            <h3>Route Intelligence</h3>
+            <p>Compare every alternative route in real-time — pipelines, maritime detours, rail options — with live cost, capacity, and risk data. AI recommends the optimal mix for your specific needs.</p>
+            <ul class="screen-info__features">
+              <li>Multi-modal route comparison (pipeline, maritime, rail)</li>
+              <li>Live capacity tracking from pipeline operators & ports</li>
+              <li>AI-optimized route recommendations</li>
+              <li>Risk scoring including secondary chokepoint analysis</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- AI Price Engine Screen -->
+        <div class="product-screen" id="screen-pricing">
+          <div class="screen-mockup">
+            <div class="screen-mockup__bar">
+              <div class="screen-mockup__dots"><span></span><span></span><span></span></div>
+              <div class="screen-mockup__title">REROUTE — AI Price Engine</div>
+            </div>
+            <div class="screen-mockup__body">
+              <div class="mock-dashboard">
+                <div class="mock-topbar">
+                  <div class="mock-topbar__left">
+                    <span class="mock-chip">Scenario: Hormuz closure — Extended (90+ days)</span>
+                  </div>
+                </div>
+                <div class="mock-price-grid">
+                  <div class="mock-price-chart">
+                    <div class="mock-panel__header">
+                      <h4>Brent Crude Price Forecast</h4>
+                      <div class="mock-chart-legend">
+                        <span class="legend-item legend-item--actual">Actual</span>
+                        <span class="legend-item legend-item--base">Base Case</span>
+                        <span class="legend-item legend-item--worst">Worst Case</span>
+                        <span class="legend-item legend-item--best">Best Case</span>
+                      </div>
+                    </div>
+                    <div class="mock-chart-area">
+                      <canvas id="priceChart"></canvas>
+                    </div>
+                  </div>
+                  <div class="mock-price-sidebar">
+                    <div class="mock-scenario-card">
+                      <h4>Scenario Parameters</h4>
+                      <div class="mock-param">
+                        <span class="mock-param__label">Duration</span>
+                        <div class="mock-slider">
+                          <div class="mock-slider__fill" style="width:75%"></div>
+                          <span class="mock-slider__value">90 days</span>
+                        </div>
+                      </div>
+                      <div class="mock-param">
+                        <span class="mock-param__label">SPR Release</span>
+                        <div class="mock-slider">
+                          <div class="mock-slider__fill" style="width:40%"></div>
+                          <span class="mock-slider__value">2M bpd</span>
+                        </div>
+                      </div>
+                      <div class="mock-param">
+                        <span class="mock-param__label">OPEC+ Response</span>
+                        <div class="mock-slider">
+                          <div class="mock-slider__fill" style="width:60%"></div>
+                          <span class="mock-slider__value">Moderate</span>
+                        </div>
+                      </div>
+                      <div class="mock-param">
+                        <span class="mock-param__label">Demand Destruction</span>
+                        <div class="mock-slider">
+                          <div class="mock-slider__fill" style="width:30%"></div>
+                          <span class="mock-slider__value">Low</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mock-forecast-summary">
+                      <h4>AI Forecast Summary</h4>
+                      <div class="mock-forecast-item">
+                        <span>Brent (30-day)</span>
+                        <span class="forecast-value forecast-value--up">$142.50</span>
+                      </div>
+                      <div class="mock-forecast-item">
+                        <span>Brent (90-day)</span>
+                        <span class="forecast-value forecast-value--up">$128.80</span>
+                      </div>
+                      <div class="mock-forecast-item">
+                        <span>WTI Spread</span>
+                        <span class="forecast-value">-$8.20</span>
+                      </div>
+                      <div class="mock-forecast-item">
+                        <span>LNG Spot (Asia)</span>
+                        <span class="forecast-value forecast-value--up">$38.40/MMBtu</span>
+                      </div>
+                      <div class="mock-forecast-item">
+                        <span>Confidence</span>
+                        <span class="forecast-value">72%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="screen-info">
+            <h3>AI Price Engine</h3>
+            <p>Model any disruption scenario and see how prices respond. Our transformer-based model combines geopolitical signals, supply/demand fundamentals, and historical disruption patterns to forecast with confidence intervals.</p>
+            <ul class="screen-info__features">
+              <li>Multi-scenario price modeling (best/base/worst case)</li>
+              <li>Adjustable parameters (duration, SPR release, OPEC response)</li>
+              <li>Commodity-specific forecasts (Brent, WTI, LNG, products)</li>
+              <li>Confidence intervals with model explainability</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Decision Copilot Screen -->
+        <div class="product-screen" id="screen-copilot">
+          <div class="screen-mockup">
+            <div class="screen-mockup__bar">
+              <div class="screen-mockup__dots"><span></span><span></span><span></span></div>
+              <div class="screen-mockup__title">REROUTE — Decision Copilot</div>
+            </div>
+            <div class="screen-mockup__body">
+              <div class="mock-dashboard mock-dashboard--copilot">
+                <div class="mock-copilot-layout">
+                  <div class="mock-copilot-chat">
+                    <div class="mock-panel__header">
+                      <h4>🤖 Decision Copilot</h4>
+                      <span class="mock-chip mock-chip--small">AI Agent</span>
+                    </div>
+                    <div class="mock-chat-messages">
+                      <div class="mock-message mock-message--system">
+                        <div class="mock-message__avatar">🤖</div>
+                        <div class="mock-message__content">
+                          <div class="mock-message__text">
+                            I've analyzed your supply chain exposure. Here's my assessment:
+                            <br/><br/>
+                            <strong>73% of your supply is Hormuz-dependent.</strong> Based on current route availability and your contract obligations, I recommend a three-phase response:
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mock-message mock-message--user">
+                        <div class="mock-message__content">
+                          <div class="mock-message__text">What should we do first? We have contracts delivering next week.</div>
+                        </div>
+                        <div class="mock-message__avatar">👤</div>
+                      </div>
+                      <div class="mock-message mock-message--system">
+                        <div class="mock-message__avatar">🤖</div>
+                        <div class="mock-message__content">
+                          <div class="mock-message__text">
+                            For your immediate contracts (next 7 days), here are my prioritized recommendations:
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mock-chat-input">
+                      <span class="mock-chat-placeholder">Ask the copilot about your supply chain...</span>
+                      <button class="mock-chat-send">→</button>
+                    </div>
+                  </div>
+                  <div class="mock-copilot-actions">
+                    <div class="mock-panel__header">
+                      <h4>Recommended Actions</h4>
+                      <span class="mock-chip mock-chip--small">3 actions</span>
+                    </div>
+                    <div class="mock-action-cards">
+                      <div class="mock-action mock-action--urgent">
+                        <div class="mock-action__header">
+                          <span class="mock-action__priority">P0 · URGENT</span>
+                          <span class="mock-action__time">Execute within 24h</span>
+                        </div>
+                        <h5>Activate East-West Pipeline Route</h5>
+                        <p>Switch 1.2M bpd Saudi Aramco supply from Ras Tanura to Yanbu terminal via Petroline. Contact Aramco trading desk to initiate FOB Yanbu pricing.</p>
+                        <div class="mock-action__impact">
+                          <span>💰 Saves $42M vs. spot market</span>
+                          <span>⏱️ -2 days transit to Jamnagar</span>
+                        </div>
+                        <div class="mock-action__buttons">
+                          <button class="mock-btn mock-btn--primary">Accept & Execute</button>
+                          <button class="mock-btn mock-btn--ghost">Modify</button>
+                        </div>
+                      </div>
+                      <div class="mock-action mock-action--high">
+                        <div class="mock-action__header">
+                          <span class="mock-action__priority">P1 · HIGH</span>
+                          <span class="mock-action__time">Execute within 48h</span>
+                        </div>
+                        <h5>Secure ADCOP Pipeline Capacity</h5>
+                        <p>Reserve 300K bpd through Fujairah terminal for UAE crude. Competition for capacity is increasing — early booking saves $1.80/bbl.</p>
+                        <div class="mock-action__impact">
+                          <span>💰 $1.80/bbl savings vs. delay</span>
+                          <span>📊 Capacity filling at 8%/hour</span>
+                        </div>
+                        <div class="mock-action__buttons">
+                          <button class="mock-btn mock-btn--primary">Accept & Execute</button>
+                          <button class="mock-btn mock-btn--ghost">Modify</button>
+                        </div>
+                      </div>
+                      <div class="mock-action">
+                        <div class="mock-action__header">
+                          <span class="mock-action__priority">P2 · MEDIUM</span>
+                          <span class="mock-action__time">Execute within 72h</span>
+                        </div>
+                        <h5>Hedge with Brent Options</h5>
+                        <p>Purchase $140 call options for Q4 delivery to cap procurement costs. Model suggests 68% probability of Brent exceeding $135 within 30 days.</p>
+                        <div class="mock-action__impact">
+                          <span>💰 Caps downside to $140/bbl</span>
+                          <span>📊 Premium: $4.20/bbl</span>
+                        </div>
+                        <div class="mock-action__buttons">
+                          <button class="mock-btn mock-btn--primary">Accept & Execute</button>
+                          <button class="mock-btn mock-btn--ghost">Modify</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="screen-info">
+            <h3>Decision Copilot</h3>
+            <p>Your AI-powered strategic advisor. The Copilot analyzes your exposure, available routes, price forecasts, and contract terms to generate prioritized action plans you can execute with one click.</p>
+            <ul class="screen-info__features">
+              <li>Conversational AI with deep supply chain context</li>
+              <li>Prioritized action recommendations (P0/P1/P2)</li>
+              <li>One-click execution with supplier integration</li>
+              <li>Continuous re-optimization as conditions change</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Who is it for -->
+      <div class="personas reveal">
+        <h3 class="personas__title">Built For</h3>
+        <div class="personas__grid">
+          <div class="persona-card">
+            <div class="persona__icon">🏦</div>
+            <h4>Energy Trading Desks</h4>
+            <p>Real-time route & price intelligence for rapid position adjustments and arbitrage opportunities.</p>
+          </div>
+          <div class="persona-card">
+            <div class="persona__icon">🏭</div>
+            <h4>Refinery Procurement</h4>
+            <p>Alternative crude source discovery and contract renegotiation support when primary suppliers are cut off.</p>
+          </div>
+          <div class="persona-card">
+            <div class="persona__icon">⚙️</div>
+            <h4>Industrial Manufacturers</h4>
+            <p>Energy supply continuity planning for large consumers whose operations depend on uninterrupted fuel delivery.</p>
+          </div>
+          <div class="persona-card">
+            <div class="persona__icon">🏛️</div>
+            <h4>Government Energy Security</h4>
+            <p>Strategic reserve management and policy decision support during national energy emergencies.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ ARCHITECTURE SECTION ═══════════════════ -->
+  <section class="section section--architecture" id="architecture">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__label">Systems & Architecture</span>
+        <h2 class="section__title">What Runs <span class="text-gradient">Behind the Product</span></h2>
+        <p class="section__desc">REROUTE integrates real-time data from maritime tracking, commodity markets, pipeline operators, and geopolitical intelligence into a unified decision layer.</p>
+      </div>
+
+      <div class="architecture-diagram reveal">
+        <div class="arch-layer arch-layer--data">
+          <div class="arch-layer__label">Data Layer</div>
+          <div class="arch-layer__items">
+            <div class="arch-item">
+              <div class="arch-item__icon">🛰️</div>
+              <div class="arch-item__name">AIS Vessel<br/>Tracking</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">📡</div>
+              <div class="arch-item__name">Commodity<br/>Price Feeds</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">🔧</div>
+              <div class="arch-item__name">Pipeline<br/>Operator APIs</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">📰</div>
+              <div class="arch-item__name">Geopolitical<br/>Intelligence</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">🌤️</div>
+              <div class="arch-item__name">Weather &<br/>Ports Data</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">📋</div>
+              <div class="arch-item__name">Contract &<br/>ERP Systems</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-connector">
+          <div class="arch-connector__line"></div>
+          <div class="arch-connector__label">Real-time ingestion · Event streaming · Data normalization</div>
+        </div>
+
+        <div class="arch-layer arch-layer--processing">
+          <div class="arch-layer__label">Intelligence Layer</div>
+          <div class="arch-layer__items">
+            <div class="arch-item arch-item--wide">
+              <div class="arch-item__icon">🧠</div>
+              <div class="arch-item__name">Graph Neural Network</div>
+              <div class="arch-item__desc">Route optimization on shipping network topology</div>
+            </div>
+            <div class="arch-item arch-item--wide">
+              <div class="arch-item__icon">📈</div>
+              <div class="arch-item__name">Transformer Price Model</div>
+              <div class="arch-item__desc">Multi-scenario commodity price forecasting</div>
+            </div>
+            <div class="arch-item arch-item--wide">
+              <div class="arch-item__icon">🔍</div>
+              <div class="arch-item__name">NLP Risk Scanner</div>
+              <div class="arch-item__desc">Real-time geopolitical event detection & scoring</div>
+            </div>
+            <div class="arch-item arch-item--wide">
+              <div class="arch-item__icon">🏗️</div>
+              <div class="arch-item__name">Digital Twin Engine</div>
+              <div class="arch-item__desc">Supply chain simulation for what-if scenarios</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-connector">
+          <div class="arch-connector__line"></div>
+          <div class="arch-connector__label">Decision synthesis · Action generation · Continuous learning</div>
+        </div>
+
+        <div class="arch-layer arch-layer--application">
+          <div class="arch-layer__label">Application Layer</div>
+          <div class="arch-layer__items">
+            <div class="arch-item">
+              <div class="arch-item__icon">🔍</div>
+              <div class="arch-item__name">Exposure<br/>Scanner</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">🗺️</div>
+              <div class="arch-item__name">Route<br/>Intelligence</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">📊</div>
+              <div class="arch-item__name">AI Price<br/>Engine</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">🤖</div>
+              <div class="arch-item__name">Decision<br/>Copilot</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-connector">
+          <div class="arch-connector__line"></div>
+          <div class="arch-connector__label">API · WebSocket · Webhooks · SSO · Audit log</div>
+        </div>
+
+        <div class="arch-layer arch-layer--delivery">
+          <div class="arch-layer__label">Delivery Layer</div>
+          <div class="arch-layer__items">
+            <div class="arch-item">
+              <div class="arch-item__icon">💻</div>
+              <div class="arch-item__name">Web<br/>Dashboard</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">📱</div>
+              <div class="arch-item__name">Mobile<br/>App</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">🔗</div>
+              <div class="arch-item__name">API<br/>Integration</div>
+            </div>
+            <div class="arch-item">
+              <div class="arch-item__icon">🔔</div>
+              <div class="arch-item__name">Alerts &<br/>Notifications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ WORKFLOWS SECTION ═══════════════════ -->
+  <section class="section section--workflows" id="workflows">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__label">Workflows & Processes</span>
+        <h2 class="section__title">From Disruption Alert to<br/><span class="text-gradient">Optimized Response</span></h2>
+        <p class="section__desc">REROUTE transforms a chaotic crisis response into a structured, AI-guided workflow — from the moment a disruption is detected to full supply chain recovery.</p>
+      </div>
+
+      <div class="workflow-timeline reveal">
+        <div class="workflow-step">
+          <div class="workflow-step__time">T+0</div>
+          <div class="workflow-step__node"></div>
+          <div class="workflow-step__card">
+            <div class="workflow-step__phase">DETECT</div>
+            <h4>Disruption Detection</h4>
+            <p>NLP scans news feeds, AIS tracking detects vessel diversions, satellite imagery confirms chokepoint closure. Alert fires across all channels.</p>
+            <div class="workflow-step__tags">
+              <span class="wtag">Auto-triggered</span>
+              <span class="wtag">&lt; 5 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="workflow-step__time">T+5m</div>
+          <div class="workflow-step__node"></div>
+          <div class="workflow-step__card">
+            <div class="workflow-step__phase">ASSESS</div>
+            <h4>Exposure Assessment</h4>
+            <p>Exposure Scanner automatically maps all affected contracts, suppliers, and in-transit cargoes. Financial impact projection begins.</p>
+            <div class="workflow-step__tags">
+              <span class="wtag">Automated</span>
+              <span class="wtag">Real-time</span>
+            </div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="workflow-step__time">T+15m</div>
+          <div class="workflow-step__node"></div>
+          <div class="workflow-step__card">
+            <div class="workflow-step__phase">PLAN</div>
+            <h4>Route & Price Modeling</h4>
+            <p>Route Intelligence queries live pipeline capacity and port availability. AI Price Engine generates multi-scenario forecasts. Decision Copilot synthesizes into action plan.</p>
+            <div class="workflow-step__tags">
+              <span class="wtag">AI-generated</span>
+              <span class="wtag">Multi-scenario</span>
+            </div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="workflow-step__time">T+30m</div>
+          <div class="workflow-step__node"></div>
+          <div class="workflow-step__card">
+            <div class="workflow-step__phase">DECIDE</div>
+            <h4>Human-in-the-Loop Review</h4>
+            <p>Trading desk reviews AI recommendations. Approves, modifies, or rejects proposed actions. Copilot explains rationale and trade-offs for each option.</p>
+            <div class="workflow-step__tags">
+              <span class="wtag">Human review</span>
+              <span class="wtag">Audit trail</span>
+            </div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="workflow-step__time">T+1h</div>
+          <div class="workflow-step__node"></div>
+          <div class="workflow-step__card">
+            <div class="workflow-step__phase">EXECUTE</div>
+            <h4>Action Execution</h4>
+            <p>Approved actions execute: pipeline capacity bookings, supplier contacts, hedging orders, vessel rerouting instructions. Integration with trading and ERP systems.</p>
+            <div class="workflow-step__tags">
+              <span class="wtag">Semi-automated</span>
+              <span class="wtag">Integrated</span>
+            </div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="workflow-step__time">Ongoing</div>
+          <div class="workflow-step__node"></div>
+          <div class="workflow-step__card">
+            <div class="workflow-step__phase">MONITOR</div>
+            <h4>Continuous Optimization</h4>
+            <p>Platform continuously monitors the evolving situation, adjusts forecasts, and proposes new actions as conditions change. Full audit trail maintained.</p>
+            <div class="workflow-step__tags">
+              <span class="wtag">24/7 monitoring</span>
+              <span class="wtag">Auto-adjust</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ GO-TO-MARKET SECTION ═══════════════════ -->
+  <section class="section section--gtm" id="gtm">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__label">Go-to-Market</span>
+        <h2 class="section__title">Building the Business<br/><span class="text-gradient">Around the Product</span></h2>
+        <p class="section__desc">REROUTE operates as a B2B SaaS platform with crisis-driven demand dynamics — when the world needs us most, we're already deployed.</p>
+      </div>
+
+      <div class="gtm-grid reveal">
+        <div class="gtm-card">
+          <div class="gtm-card__icon">💰</div>
+          <h3>Pricing Model</h3>
+          <div class="gtm-pricing">
+            <div class="pricing-tier">
+              <div class="pricing-tier__name">Starter</div>
+              <div class="pricing-tier__price">$5K<span>/mo</span></div>
+              <ul>
+                <li>Exposure Scanner</li>
+                <li>Basic route comparison</li>
+                <li>Email alerts</li>
+                <li>Up to 10 contracts tracked</li>
+              </ul>
+            </div>
+            <div class="pricing-tier pricing-tier--featured">
+              <div class="pricing-tier__badge">Most Popular</div>
+              <div class="pricing-tier__name">Professional</div>
+              <div class="pricing-tier__price">$15K<span>/mo</span></div>
+              <ul>
+                <li>All 4 modules</li>
+                <li>AI Price Engine (5 scenarios)</li>
+                <li>Decision Copilot</li>
+                <li>Unlimited contracts</li>
+                <li>API access</li>
+              </ul>
+            </div>
+            <div class="pricing-tier">
+              <div class="pricing-tier__name">Enterprise</div>
+              <div class="pricing-tier__price">Custom</div>
+              <ul>
+                <li>Custom AI models</li>
+                <li>ERP/ETRM integration</li>
+                <li>Dedicated instance</li>
+                <li>24/7 crisis support</li>
+                <li>On-premise option</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="gtm-card">
+          <div class="gtm-card__icon">🎯</div>
+          <h3>Sales Strategy</h3>
+          <ul class="gtm-list">
+            <li><strong>Target:</strong> Top 200 energy importers, trading houses, and refinery operators globally</li>
+            <li><strong>Motion:</strong> Direct enterprise sales with technical demo + proof of value using customer's own supply chain data</li>
+            <li><strong>Land & Expand:</strong> Start with Exposure Scanner, expand to full platform as crisis intensifies</li>
+            <li><strong>Crisis Conversion:</strong> Pre-positioned relationships convert rapidly when disruption hits — 48-hour emergency onboarding</li>
+          </ul>
+        </div>
+
+        <div class="gtm-card">
+          <div class="gtm-card__icon">📣</div>
+          <h3>Marketing & Brand</h3>
+          <ul class="gtm-list">
+            <li><strong>Thought Leadership:</strong> Energy security reports, chokepoint risk index, published disruption scenarios</li>
+            <li><strong>Content:</strong> "What If" scenario series showing business impact of various Hormuz disruption durations</li>
+            <li><strong>Events:</strong> Presence at ADIPEC, CERAWeek, Singapore Energy Week</li>
+            <li><strong>Insurance Play:</strong> Position as "insurance against supply chain disruption" — low cost vs. potential loss</li>
+          </ul>
+        </div>
+
+        <div class="gtm-card">
+          <div class="gtm-card__icon">🤝</div>
+          <h3>Customer Success</h3>
+          <ul class="gtm-list">
+            <li><strong>Onboarding:</strong> White-glove supply chain mapping — we build the customer's dependency graph with them</li>
+            <li><strong>Peacetime Value:</strong> Quarterly risk reports, scenario drills, and supply chain optimization insights</li>
+            <li><strong>Crisis Mode:</strong> Dedicated war-room support with 24/7 analyst coverage during active disruptions</li>
+            <li><strong>Outcome:</strong> Customers measure ROI as cost-avoided during disruptions vs. unmanaged response</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gtm-flywheel reveal">
+        <h3>The REROUTE Flywheel</h3>
+        <div class="flywheel">
+          <div class="flywheel__center">
+            <span>Data<br/>Advantage</span>
+          </div>
+          <div class="flywheel__item flywheel__item--1">
+            <span>More customers → more supply chain data</span>
+          </div>
+          <div class="flywheel__item flywheel__item--2">
+            <span>Better data → more accurate AI models</span>
+          </div>
+          <div class="flywheel__item flywheel__item--3">
+            <span>Better predictions → faster decisions</span>
+          </div>
+          <div class="flywheel__item flywheel__item--4">
+            <span>Better outcomes → more customers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ AI & TECHNOLOGY SECTION ═══════════════════ -->
+  <section class="section section--ai" id="ai">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__label">Technology & AI</span>
+        <h2 class="section__title">Where AI Makes<br/><span class="text-gradient">the Difference</span></h2>
+        <p class="section__desc">REROUTE isn't a dashboard with charts — it's an intelligent system that reasons about your supply chain and acts as a strategic co-pilot.</p>
+      </div>
+
+      <div class="ai-grid reveal">
+        <div class="ai-card ai-card--featured">
+          <div class="ai-card__header">
+            <span class="ai-card__icon">🧠</span>
+            <h3>LLM-Powered Decision Copilot</h3>
+          </div>
+          <p>A fine-tuned large language model with RAG (Retrieval-Augmented Generation) over your contracts, route data, market conditions, and historical decisions. It doesn't just answer questions — it proactively generates and prioritizes action plans.</p>
+          <div class="ai-card__tech-stack">
+            <span class="tech-tag">Fine-tuned LLM</span>
+            <span class="tech-tag">RAG Pipeline</span>
+            <span class="tech-tag">Tool Use / Function Calling</span>
+            <span class="tech-tag">Agentic Workflows</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-card__header">
+            <span class="ai-card__icon">📈</span>
+            <h3>Transformer Price Forecaster</h3>
+          </div>
+          <p>Multi-head attention model trained on commodity price history, geopolitical event data, shipping patterns, and macroeconomic indicators. Generates probabilistic forecasts with confidence intervals.</p>
+          <div class="ai-card__tech-stack">
+            <span class="tech-tag">Time-series Transformer</span>
+            <span class="tech-tag">Monte Carlo Simulation</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-card__header">
+            <span class="ai-card__icon">🕸️</span>
+            <h3>Graph Neural Route Optimizer</h3>
+          </div>
+          <p>Models the global shipping network as a graph — ports, pipelines, chokepoints as nodes, routes as edges — and optimizes for cost, time, capacity, and risk simultaneously using GNN embeddings.</p>
+          <div class="ai-card__tech-stack">
+            <span class="tech-tag">Graph Neural Networks</span>
+            <span class="tech-tag">Multi-objective Optimization</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-card__header">
+            <span class="ai-card__icon">📡</span>
+            <h3>Real-time NLP Intelligence</h3>
+          </div>
+          <p>Continuous monitoring of news sources, social media, government communications, and shipping reports. Named entity recognition and sentiment analysis detect emerging risks before they become crises.</p>
+          <div class="ai-card__tech-stack">
+            <span class="tech-tag">NER + Sentiment Analysis</span>
+            <span class="tech-tag">Event Extraction</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-card__header">
+            <span class="ai-card__icon">🏗️</span>
+            <h3>Digital Twin Simulation</h3>
+          </div>
+          <p>Full supply chain digital twin that allows what-if scenario testing. "What happens if we switch 40% of Saudi supply to the pipeline?" Run the simulation, see the cascading effects across your entire operation.</p>
+          <div class="ai-card__tech-stack">
+            <span class="tech-tag">Agent-based Simulation</span>
+            <span class="tech-tag">Discrete Event Modeling</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-card__header">
+            <span class="ai-card__icon">🛰️</span>
+            <h3>AIS + Satellite Fusion</h3>
+          </div>
+          <p>Combines AIS vessel tracking with satellite imagery for ground-truth vessel detection, even when transponders are disabled. Provides real-time situational awareness of the entire maritime theater.</p>
+          <div class="ai-card__tech-stack">
+            <span class="tech-tag">Computer Vision</span>
+            <span class="tech-tag">Sensor Fusion</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <span class="nav__logo-icon">⚡</span>
+          <span class="nav__logo-text">REROUTE</span>
+          <p class="footer__tagline">When the strait closes, your supply chain reroutes.</p>
+        </div>
+        <div class="footer__meta">
+          <p>A product concept by <strong>Polyinnovae</strong></p>
+          <p class="footer__note">Designed for the Strait of Hormuz Design Challenge</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

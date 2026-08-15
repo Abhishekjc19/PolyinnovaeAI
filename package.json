@@ -1,0 +1,41 @@
+{
+  "name": "polyinnovae",
+  "version": "1.0.2",
+  "private": true,
+  "type": "module",
+  "description": "AI-powered energy supply chain resilience platform for navigating Strait of Hormuz disruptions",
+  "author": {
+    "name": "REROUTE Team",
+    "email": "team@reroute.energy",
+    "url": "https://reroute.energy"
+  },
+  "license": "MIT",
+  "keywords": [
+    "energy",
+    "supply-chain",
+    "strait-of-hormuz",
+    "route-optimization",
+    "price-forecasting",
+    "decision-support",
+    "maritime",
+    "geopolitics"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Abhishekjc19/PolyinnovaeAI.git"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "echo 'Linting not yet configured'",
+    "test": "echo 'Tests not yet configured'"
+  },
+  "devDependencies": {
+    "vite": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
