@@ -663,6 +663,19 @@ function initProductTabs() {
   });
 }
 
+// ─── Scroll Progress Bar ───
+function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    bar.style.width = progress + '%';
+  });
+}
+
 // ─── Navigation ───
 function initNavigation() {
   const nav = document.getElementById('nav');
@@ -717,6 +730,12 @@ document.addEventListener('DOMContentLoaded', () => {
   animateCounters();
   initProductTabs();
   initNavigation();
+  initScrollProgress();
+
+  // Re-initialize lucide icons after DOM is ready
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
 
   // Activate first product screen
   const firstScreen = document.getElementById('screen-exposure');
