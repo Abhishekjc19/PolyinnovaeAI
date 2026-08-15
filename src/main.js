@@ -10,8 +10,11 @@ class GlobeAnimation {
     this.ctx = canvas.getContext('2d');
     this.particles = [];
     this.routes = [];
+    this.nodes = [];
+    this.landmasses = [];
     this.animationFrame = null;
     this.time = 0;
+    this.initialized = false;
     this.resize();
     this.init();
     window.addEventListener('resize', () => this.resize());
@@ -22,99 +25,116 @@ class GlobeAnimation {
     this.canvas.height = window.innerHeight;
     this.cx = this.canvas.width / 2;
     this.cy = this.canvas.height / 2;
+
+    if (this.initialized) {
+      this.buildScene();
+    }
   }
 
   init() {
-    // Create background star-like particles
-    for (let i = 0; i < 150; i++) {
+    // Background particles to keep the canvas alive without distracting the hero copy.
+    for (let i = 0; i < 120; i++) {
       this.particles.push({
         x: Math.random() * this.canvas.width,
         y: Math.random() * this.canvas.height,
-        size: Math.random() * 1.5 + 0.5,
-        speed: Math.random() * 0.3 + 0.05,
-        opacity: Math.random() * 0.5 + 0.1,
-        pulseSpeed: Math.random() * 0.02 + 0.005,
+        size: Math.random() * 1.6 + 0.4,
+        opacity: Math.random() * 0.35 + 0.08,
+        pulseSpeed: Math.random() * 0.03 + 0.005,
       });
     }
 
-    // Define shipping route paths (simplified coordinates on screen)
+    this.buildScene();
+    this.initialized = true;
+    this.animate();
+  }
+
+  buildScene() {
     const w = this.canvas.width;
     const h = this.canvas.height;
+    const p = (nx, ny) => ({ x: w * nx, y: h * ny });
 
-    // Hormuz route (red, pulsing danger)
-    this.routes.push({
-      points: this.generateCurve(
-        { x: w * 0.55, y: h * 0.35 },
-        { x: w * 0.58, y: h * 0.42 },
-        { x: w * 0.62, y: h * 0.5 },
-        20
-      ),
-      color: '#ef4444',
-      glowColor: 'rgba(239, 68, 68, 0.3)',
-      blocked: true,
-      particleColor: '#ef4444',
-      width: 2,
-    });
+    this.nodes = [
+      { key: 'yanbu', label: 'Yanbu (7.0 Mbpd)', ...p(0.34, 0.55), color: '#2dd4bf', size: 6 },
+      { key: 'ras', label: 'Ras Tanura', ...p(0.5, 0.48), color: '#60a5fa', size: 5 },
+      { key: 'hormuz', label: 'Hormuz', ...p(0.57, 0.5), color: '#ef4444', size: 6 },
+      { key: 'fujairah', label: 'Fujairah (1.8 Mbpd)', ...p(0.615, 0.56), color: '#2dd4bf', size: 6 },
+      { key: 'jamnagar', label: 'Jamnagar', ...p(0.72, 0.52), color: '#22d3ee', size: 6 },
+      { key: 'cape', label: 'Cape Route (+14-18d)', ...p(0.18, 0.8), color: '#a855f7', size: 5 },
+      { key: 'suez', label: 'Suez', ...p(0.43, 0.28), color: '#34d399', size: 5 },
+    ];
 
-    // East-West Pipeline route (teal)
-    this.routes.push({
-      points: this.generateCurve(
-        { x: w * 0.5, y: h * 0.38 },
-        { x: w * 0.42, y: h * 0.4 },
-        { x: w * 0.35, y: h * 0.45 },
-        25
-      ),
-      color: '#06b6d4',
-      glowColor: 'rgba(6, 182, 212, 0.2)',
-      blocked: false,
-      particleColor: '#22d3ee',
-      width: 1.5,
-    });
+    const node = (key) => this.nodes.find((n) => n.key === key);
 
-    // Cape of Good Hope route (blue, long curve)
-    this.routes.push({
-      points: this.generateMultiCurve([
-        { x: w * 0.55, y: h * 0.4 },
-        { x: w * 0.48, y: h * 0.55 },
-        { x: w * 0.38, y: h * 0.7 },
-        { x: w * 0.3, y: h * 0.75 },
-        { x: w * 0.25, y: h * 0.65 },
-        { x: w * 0.28, y: h * 0.5 },
-      ], 40),
-      color: '#3b82f6',
-      glowColor: 'rgba(59, 130, 246, 0.15)',
-      blocked: false,
-      particleColor: '#60a5fa',
-      width: 1.5,
-    });
+    this.landmasses = [
+      [p(0.12, 0.28), p(0.18, 0.4), p(0.24, 0.66), p(0.21, 0.86), p(0.14, 0.86), p(0.1, 0.64), p(0.1, 0.42)],
+      [p(0.36, 0.26), p(0.52, 0.3), p(0.6, 0.34), p(0.67, 0.46), p(0.69, 0.58), p(0.62, 0.72), p(0.53, 0.76), p(0.45, 0.72), p(0.37, 0.8), p(0.28, 0.84), p(0.2, 0.8), p(0.18, 0.66), p(0.21, 0.54), p(0.26, 0.38)],
+      [p(0.74, 0.34), p(0.79, 0.42), p(0.85, 0.48), p(0.89, 0.62), p(0.86, 0.76), p(0.82, 0.9), p(0.76, 0.8), p(0.72, 0.68), p(0.71, 0.56)],
+    ];
 
-    // Supply route to India (amber)
-    this.routes.push({
-      points: this.generateCurve(
-        { x: w * 0.58, y: h * 0.42 },
-        { x: w * 0.65, y: h * 0.48 },
-        { x: w * 0.7, y: h * 0.45 },
-        20
-      ),
-      color: '#f59e0b',
-      glowColor: 'rgba(245, 158, 11, 0.2)',
-      blocked: false,
-      particleColor: '#fbbf24',
-      width: 1.5,
-    });
+    this.routes = [
+      {
+        type: 'pipeline',
+        points: this.generateCurve(node('ras'), p(0.42, 0.52), node('yanbu'), 24),
+        color: '#34d399',
+        glowColor: 'rgba(52, 211, 153, 0.24)',
+        width: 4,
+        dashed: false,
+        blocked: false,
+        flow: true,
+      },
+      {
+        type: 'active',
+        points: this.generateCurve(node('fujairah'), p(0.67, 0.54), node('jamnagar'), 20),
+        color: '#22d3ee',
+        glowColor: 'rgba(34, 211, 238, 0.24)',
+        width: 2.3,
+        dashed: false,
+        blocked: false,
+        flow: true,
+      },
+      {
+        type: 'blocked',
+        points: this.generateCurve(node('ras'), p(0.545, 0.49), node('hormuz'), 16),
+        color: '#ef4444',
+        glowColor: 'rgba(239, 68, 68, 0.3)',
+        width: 2,
+        dashed: true,
+        blocked: true,
+        flow: false,
+      },
+      {
+        type: 'cape',
+        points: this.generateMultiCurve([
+          p(0.52, 0.5),
+          p(0.45, 0.67),
+          p(0.3, 0.82),
+          p(0.22, 0.9),
+          node('cape'),
+          p(0.1, 0.78),
+          p(0.12, 0.56),
+          p(0.16, 0.36),
+          node('suez'),
+        ], 55),
+        color: '#a855f7',
+        glowColor: 'rgba(168, 85, 247, 0.2)',
+        width: 2,
+        dashed: true,
+        blocked: false,
+        flow: true,
+      },
+    ];
 
-    // Route particles
     this.routes.forEach((route) => {
       route.travelingParticles = [];
-      for (let i = 0; i < 3; i++) {
-        route.travelingParticles.push({
-          progress: Math.random(),
-          speed: 0.002 + Math.random() * 0.003,
-        });
+      if (route.flow) {
+        for (let i = 0; i < 3; i++) {
+          route.travelingParticles.push({
+            progress: Math.random(),
+            speed: 0.0018 + Math.random() * 0.0025,
+          });
+        }
       }
     });
-
-    this.animate();
   }
 
   generateCurve(start, control, end, segments) {
@@ -135,8 +155,8 @@ class GlobeAnimation {
       const start = waypoints[i];
       const end = waypoints[i + 1];
       const mid = {
-        x: (start.x + end.x) / 2 + (Math.random() - 0.5) * 40,
-        y: (start.y + end.y) / 2 + (Math.random() - 0.5) * 40,
+        x: (start.x + end.x) / 2 + (Math.random() - 0.5) * 26,
+        y: (start.y + end.y) / 2 + (Math.random() - 0.5) * 26,
       };
       for (let j = 0; j <= segPerSection; j++) {
         const t = j / segPerSection;
@@ -148,128 +168,245 @@ class GlobeAnimation {
     return points;
   }
 
-  animate() {
-    this.time += 0.01;
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    // Draw background particles (stars)
-    this.particles.forEach((p) => {
-      const pulse = Math.sin(this.time * p.pulseSpeed * 100) * 0.3 + 0.7;
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(139, 149, 176, ${p.opacity * pulse})`;
-      this.ctx.fill();
-    });
-
-    // Draw the Hormuz chokepoint marker
+  drawGrid() {
     const w = this.canvas.width;
     const h = this.canvas.height;
-    const hormuzX = w * 0.57;
-    const hormuzY = h * 0.4;
+    const major = Math.max(90, Math.floor(w / 12));
+    const minor = Math.floor(major / 3);
 
-    // Pulsing danger circle
-    const pulseSize = Math.sin(this.time * 3) * 15 + 35;
-    this.ctx.beginPath();
-    this.ctx.arc(hormuzX, hormuzY, pulseSize, 0, Math.PI * 2);
-    this.ctx.fillStyle = `rgba(239, 68, 68, ${0.05 + Math.sin(this.time * 3) * 0.03})`;
-    this.ctx.fill();
-
-    this.ctx.beginPath();
-    this.ctx.arc(hormuzX, hormuzY, 20, 0, Math.PI * 2);
-    this.ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
-    this.ctx.fill();
-    this.ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
     this.ctx.lineWidth = 1;
-    this.ctx.stroke();
+    for (let x = 0; x < w; x += minor) {
+      const isMajor = x % major === 0;
+      this.ctx.strokeStyle = isMajor ? 'rgba(59, 130, 246, 0.09)' : 'rgba(59, 130, 246, 0.04)';
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, h);
+      this.ctx.stroke();
+    }
 
-    // X mark for blocked
-    this.ctx.strokeStyle = '#ef4444';
-    this.ctx.lineWidth = 2;
+    for (let y = 0; y < h; y += minor) {
+      const isMajor = y % major === 0;
+      this.ctx.strokeStyle = isMajor ? 'rgba(59, 130, 246, 0.09)' : 'rgba(59, 130, 246, 0.04)';
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(w, y);
+      this.ctx.stroke();
+    }
+  }
+
+  drawLandmasses() {
+    this.landmasses.forEach((shape) => {
+      this.ctx.beginPath();
+      shape.forEach((point, i) => {
+        if (i === 0) this.ctx.moveTo(point.x, point.y);
+        else this.ctx.lineTo(point.x, point.y);
+      });
+      this.ctx.closePath();
+      this.ctx.fillStyle = 'rgba(20, 34, 58, 0.43)';
+      this.ctx.fill();
+      this.ctx.strokeStyle = 'rgba(94, 121, 163, 0.14)';
+      this.ctx.lineWidth = 1.2;
+      this.ctx.stroke();
+    });
+  }
+
+  drawLegend() {
+    const x = this.canvas.width * 0.06;
+    const y = this.canvas.height * 0.2;
+    const items = [
+      { label: 'Overland Pipeline Bypass', color: '#34d399' },
+      { label: 'Active Tanker Lane', color: '#22d3ee' },
+      { label: 'Cape Detour (+14-18d)', color: '#a855f7', dashed: true },
+      { label: 'Chokepoint Blockade', color: '#ef4444' },
+    ];
+
+    this.ctx.fillStyle = 'rgba(9, 18, 35, 0.7)';
+    this.ctx.strokeStyle = 'rgba(120, 145, 185, 0.18)';
+    this.ctx.lineWidth = 1;
     this.ctx.beginPath();
-    this.ctx.moveTo(hormuzX - 6, hormuzY - 6);
-    this.ctx.lineTo(hormuzX + 6, hormuzY + 6);
-    this.ctx.moveTo(hormuzX + 6, hormuzY - 6);
-    this.ctx.lineTo(hormuzX - 6, hormuzY + 6);
+    this.ctx.roundRect(x - 16, y - 20, 420, 44, 12);
+    this.ctx.fill();
     this.ctx.stroke();
 
-    // Draw routes
+    let cursorX = x;
+    items.forEach((item) => {
+      this.ctx.beginPath();
+      if (item.dashed) this.ctx.setLineDash([5, 4]);
+      this.ctx.strokeStyle = item.color;
+      this.ctx.lineWidth = 3;
+      this.ctx.moveTo(cursorX, y);
+      this.ctx.lineTo(cursorX + 14, y);
+      this.ctx.stroke();
+      this.ctx.setLineDash([]);
+
+      this.ctx.font = '600 11px "JetBrains Mono", monospace';
+      this.ctx.fillStyle = 'rgba(200, 214, 236, 0.85)';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText(item.label, cursorX + 20, y + 4);
+      cursorX += this.ctx.measureText(item.label).width + 46;
+    });
+  }
+
+  drawRegions() {
+    const labels = [
+      { text: 'MEDITERRANEAN', x: 0.38, y: 0.26 },
+      { text: 'RED SEA', x: 0.2, y: 0.52 },
+      { text: 'PERSIAN GULF', x: 0.5, y: 0.44 },
+      { text: 'ARABIAN SEA', x: 0.67, y: 0.78 },
+    ];
+
+    this.ctx.font = '700 12px "JetBrains Mono", monospace';
+    this.ctx.fillStyle = 'rgba(46, 169, 255, 0.38)';
+    this.ctx.textAlign = 'center';
+    labels.forEach((label) => {
+      this.ctx.fillText(label.text, this.canvas.width * label.x, this.canvas.height * label.y);
+    });
+  }
+
+  drawRoutes() {
     this.routes.forEach((route) => {
-      // Glow
-      this.ctx.strokeStyle = route.glowColor;
-      this.ctx.lineWidth = route.width + 4;
       this.ctx.lineCap = 'round';
       this.ctx.lineJoin = 'round';
+
+      // Glow pass
+      this.ctx.strokeStyle = route.glowColor;
+      this.ctx.lineWidth = route.width + 5;
       this.ctx.beginPath();
-      route.points.forEach((p, i) => {
-        if (i === 0) this.ctx.moveTo(p.x, p.y);
-        else this.ctx.lineTo(p.x, p.y);
+      route.points.forEach((point, i) => {
+        if (i === 0) this.ctx.moveTo(point.x, point.y);
+        else this.ctx.lineTo(point.x, point.y);
       });
       this.ctx.stroke();
 
-      // Line
-      if (route.blocked) {
-        this.ctx.setLineDash([6, 6]);
-        this.ctx.lineDashOffset = -this.time * 50;
+      // Main path
+      if (route.dashed) {
+        this.ctx.setLineDash([7, 6]);
+        this.ctx.lineDashOffset = -this.time * 35;
       } else {
         this.ctx.setLineDash([]);
       }
       this.ctx.strokeStyle = route.color;
       this.ctx.lineWidth = route.width;
       this.ctx.beginPath();
-      route.points.forEach((p, i) => {
-        if (i === 0) this.ctx.moveTo(p.x, p.y);
-        else this.ctx.lineTo(p.x, p.y);
+      route.points.forEach((point, i) => {
+        if (i === 0) this.ctx.moveTo(point.x, point.y);
+        else this.ctx.lineTo(point.x, point.y);
       });
       this.ctx.stroke();
       this.ctx.setLineDash([]);
 
-      // Traveling particles along routes
-      if (!route.blocked) {
-        route.travelingParticles.forEach((tp) => {
-          tp.progress += tp.speed;
-          if (tp.progress > 1) tp.progress = 0;
+      // Traveling flow particles
+      route.travelingParticles.forEach((flowParticle) => {
+        flowParticle.progress += flowParticle.speed;
+        if (flowParticle.progress > 1) flowParticle.progress = 0;
 
-          const idx = Math.floor(tp.progress * (route.points.length - 1));
-          const point = route.points[idx];
-          if (point) {
-            this.ctx.beginPath();
-            this.ctx.arc(point.x, point.y, 3, 0, Math.PI * 2);
-            this.ctx.fillStyle = route.particleColor;
-            this.ctx.fill();
+        const idx = Math.floor(flowParticle.progress * (route.points.length - 1));
+        const point = route.points[idx];
+        if (!point) return;
 
-            // Trail glow
-            this.ctx.beginPath();
-            this.ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
-            this.ctx.fillStyle = route.glowColor;
-            this.ctx.fill();
-          }
-        });
-      }
-
-      // Start and end nodes
-      const start = route.points[0];
-      const end = route.points[route.points.length - 1];
-      [start, end].forEach((node) => {
         this.ctx.beginPath();
-        this.ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
-        this.ctx.fillStyle = route.color;
+        this.ctx.arc(point.x, point.y, 3.3, 0, Math.PI * 2);
+        this.ctx.fillStyle = '#e2e8f0';
         this.ctx.fill();
+
         this.ctx.beginPath();
-        this.ctx.arc(node.x, node.y, 7, 0, Math.PI * 2);
-        this.ctx.strokeStyle = route.color;
-        this.ctx.lineWidth = 1;
-        this.ctx.stroke();
+        this.ctx.arc(point.x, point.y, 7.5, 0, Math.PI * 2);
+        this.ctx.fillStyle = route.glowColor;
+        this.ctx.fill();
       });
     });
+  }
 
-    // Label for Hormuz
-    this.ctx.font = '600 11px Inter, sans-serif';
-    this.ctx.fillStyle = '#ef4444';
+  drawNodes() {
+    this.nodes.forEach((node) => {
+      this.ctx.beginPath();
+      this.ctx.arc(node.x, node.y, node.size + 4, 0, Math.PI * 2);
+      this.ctx.fillStyle = `${node.color}22`;
+      this.ctx.fill();
+
+      this.ctx.beginPath();
+      this.ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+      this.ctx.fillStyle = node.color;
+      this.ctx.fill();
+
+      this.ctx.beginPath();
+      this.ctx.arc(node.x, node.y, node.size + 1.5, 0, Math.PI * 2);
+      this.ctx.strokeStyle = 'rgba(236, 246, 255, 0.65)';
+      this.ctx.lineWidth = 1;
+      this.ctx.stroke();
+
+      this.ctx.font = '600 10px "JetBrains Mono", monospace';
+      this.ctx.fillStyle = 'rgba(181, 196, 220, 0.85)';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText(node.label, node.x + 10, node.y - 8);
+    });
+  }
+
+  drawBlockade() {
+    const marker = this.nodes.find((node) => node.key === 'hormuz');
+    if (!marker) return;
+
+    const pulse = Math.sin(this.time * 2.8) * 10 + 22;
+
+    this.ctx.beginPath();
+    this.ctx.arc(marker.x, marker.y, pulse, 0, Math.PI * 2);
+    this.ctx.fillStyle = `rgba(239, 68, 68, ${0.08 + Math.sin(this.time * 2.8) * 0.03})`;
+    this.ctx.fill();
+
+    this.ctx.beginPath();
+    this.ctx.arc(marker.x, marker.y, 30, 0, Math.PI * 2);
+    this.ctx.strokeStyle = 'rgba(239, 68, 68, 0.55)';
+    this.ctx.lineWidth = 2;
+    this.ctx.setLineDash([4, 4]);
+    this.ctx.lineDashOffset = -this.time * 45;
+    this.ctx.stroke();
+    this.ctx.setLineDash([]);
+
+    const badgeX = marker.x - 66;
+    const badgeY = marker.y - 72;
+    this.ctx.fillStyle = 'rgba(127, 29, 29, 0.78)';
+    this.ctx.strokeStyle = 'rgba(239, 68, 68, 0.65)';
+    this.ctx.lineWidth = 1;
+    this.ctx.beginPath();
+    this.ctx.roundRect(badgeX, badgeY, 132, 24, 6);
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.font = '700 10px "JetBrains Mono", monospace';
+    this.ctx.fillStyle = '#fecaca';
     this.ctx.textAlign = 'center';
-    this.ctx.fillText('STRAIT OF HORMUZ', hormuzX, hormuzY - 30);
-    this.ctx.font = '500 9px "JetBrains Mono", monospace';
-    this.ctx.fillStyle = 'rgba(239, 68, 68, 0.7)';
-    this.ctx.fillText('BLOCKED', hormuzX, hormuzY - 18);
+    this.ctx.fillText('HORMUZ BLOCKED', marker.x, badgeY + 16);
+  }
+
+  animate() {
+    this.time += 0.01;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+
+    const bg = this.ctx.createRadialGradient(w * 0.62, h * 0.48, 120, w * 0.55, h * 0.5, w * 0.82);
+    bg.addColorStop(0, 'rgba(14, 30, 58, 0.32)');
+    bg.addColorStop(1, 'rgba(3, 8, 20, 0.05)');
+    this.ctx.fillStyle = bg;
+    this.ctx.fillRect(0, 0, w, h);
+
+    this.drawGrid();
+    this.drawLandmasses();
+
+    this.particles.forEach((particle) => {
+      const pulse = Math.sin(this.time * particle.pulseSpeed * 90) * 0.3 + 0.72;
+      this.ctx.beginPath();
+      this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(123, 149, 192, ${particle.opacity * pulse})`;
+      this.ctx.fill();
+    });
+
+    this.drawRegions();
+    this.drawRoutes();
+    this.drawNodes();
+    this.drawBlockade();
+    this.drawLegend();
 
     this.animationFrame = requestAnimationFrame(() => this.animate());
   }
