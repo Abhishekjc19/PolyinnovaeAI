@@ -8,224 +8,333 @@ class GlobeAnimation {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-    this.particles = [];
-    this.routes = [];
-    this.nodes = [];
-    this.landmasses = [];
+    this.stars = [];
+    this.routeParticles = [];
+    this.rotationY = 0;
+    this.rotationX = -0.2;
+    this.pointerInfluenceX = 0;
+    this.pointerInfluenceY = 0;
+    this.nodes = {
+      yanbu: { name: 'Yanbu', lat: 24.1, lon: 38.0, color: '#2dd4bf' },
+      rasTanura: { name: 'Ras Tanura', lat: 26.7, lon: 50.2, color: '#60a5fa' },
+      hormuz: { name: 'Hormuz', lat: 26.5, lon: 56.3, color: '#ef4444' },
+      fujairah: { name: 'Fujairah', lat: 25.1, lon: 56.4, color: '#22d3ee' },
+      jamnagar: { name: 'Jamnagar', lat: 22.5, lon: 70.1, color: '#22d3ee' },
+      cape: { name: 'Cape Route', lat: -34.3, lon: 18.5, color: '#a855f7' },
+      suez: { name: 'Suez', lat: 30.0, lon: 32.5, color: '#34d399' },
+    };
+    this.routes = [
+      {
+        key: 'pipeline',
+        from: 'rasTanura',
+        to: 'yanbu',
+        color: '#34d399',
+        width: 3.2,
+        dashed: false,
+        arcHeight: 0.07,
+      },
+      {
+        key: 'active',
+        from: 'fujairah',
+        to: 'jamnagar',
+        color: '#22d3ee',
+        width: 2.1,
+        dashed: false,
+        arcHeight: 0.08,
+      },
+      {
+        key: 'blocked',
+        from: 'rasTanura',
+        to: 'hormuz',
+        color: '#ef4444',
+        width: 1.8,
+        dashed: true,
+        arcHeight: 0.04,
+      },
+      {
+        key: 'cape',
+        from: 'hormuz',
+        to: 'suez',
+        via: 'cape',
+        color: '#a855f7',
+        width: 1.9,
+        dashed: true,
+        arcHeight: 0.12,
+      },
+    ];
     this.animationFrame = null;
     this.time = 0;
-    this.initialized = false;
+    this.heroCenter = { x: 0, y: 0 };
+    this.radius = 0;
     this.resize();
     this.init();
+    this.handlePointerMove = (event) => {
+      const rx = event.clientX / Math.max(window.innerWidth, 1);
+      const ry = event.clientY / Math.max(window.innerHeight, 1);
+      this.pointerInfluenceX = (rx - 0.72) * 0.4;
+      this.pointerInfluenceY = (ry - 0.5) * 0.25;
+    };
+    this.handlePointerLeave = () => {
+      this.pointerInfluenceX = 0;
+      this.pointerInfluenceY = 0;
+    };
     window.addEventListener('resize', () => this.resize());
+    window.addEventListener('pointermove', this.handlePointerMove);
+    window.addEventListener('pointerleave', this.handlePointerLeave);
   }
 
   resize() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    this.cx = this.canvas.width / 2;
-    this.cy = this.canvas.height / 2;
-
-    if (this.initialized) {
-      this.buildScene();
-    }
+    this.heroCenter.x = this.canvas.width * 0.73;
+    this.heroCenter.y = this.canvas.height * 0.54;
+    this.radius = Math.min(this.canvas.width, this.canvas.height) * 0.33;
+    this.buildScene();
   }
 
   init() {
-    // Background particles to keep the canvas alive without distracting the hero copy.
-    for (let i = 0; i < 120; i++) {
-      this.particles.push({
-        x: Math.random() * this.canvas.width,
-        y: Math.random() * this.canvas.height,
-        size: Math.random() * 1.6 + 0.4,
-        opacity: Math.random() * 0.35 + 0.08,
-        pulseSpeed: Math.random() * 0.03 + 0.005,
+    for (let i = 0; i < 170; i++) {
+      this.stars.push({
+        x: Math.random(),
+        y: Math.random(),
+        z: Math.random(),
+        size: Math.random() * 1.8 + 0.4,
+        pulse: Math.random() * 2 * Math.PI,
       });
     }
 
-    this.buildScene();
-    this.initialized = true;
     this.animate();
   }
 
   buildScene() {
-    const w = this.canvas.width;
-    const h = this.canvas.height;
-    const xMap = (nx) => 0.28 + nx * 0.68;
-    const p = (nx, ny) => ({ x: w * xMap(nx), y: h * ny });
+    this.routeParticles = this.routes.map((route) => ({
+      routeKey: route.key,
+      progress: Math.random(),
+      speed: 0.0015 + Math.random() * 0.0022,
+    }));
+  }
 
-    this.nodes = [
-      { key: 'yanbu', label: 'Yanbu (7.0 Mbpd)', ...p(0.34, 0.55), color: '#2dd4bf', size: 6, labelAlign: 'right' },
-      { key: 'ras', label: 'Ras Tanura', ...p(0.5, 0.48), color: '#60a5fa', size: 5, labelAlign: 'right' },
-      { key: 'hormuz', label: 'Hormuz', ...p(0.57, 0.5), color: '#ef4444', size: 6, labelAlign: 'right' },
-      { key: 'fujairah', label: 'Fujairah (1.8 Mbpd)', ...p(0.615, 0.56), color: '#2dd4bf', size: 6, labelAlign: 'right' },
-      { key: 'jamnagar', label: 'Jamnagar', ...p(0.72, 0.52), color: '#22d3ee', size: 6, labelAlign: 'left' },
-      { key: 'cape', label: 'Cape Route (+14-18d)', ...p(0.18, 0.8), color: '#a855f7', size: 5, labelAlign: 'right' },
-      { key: 'suez', label: 'Suez', ...p(0.43, 0.28), color: '#34d399', size: 5, labelAlign: 'right' },
-    ];
+  project(latDeg, lonDeg, radiusBoost = 1) {
+    const lat = (latDeg * Math.PI) / 180;
+    const lon = (lonDeg * Math.PI) / 180;
 
-    const node = (key) => this.nodes.find((n) => n.key === key);
+    const x0 = Math.cos(lat) * Math.cos(lon);
+    const y0 = Math.sin(lat);
+    const z0 = Math.cos(lat) * Math.sin(lon);
 
-    this.landmasses = [
-      [p(0.12, 0.28), p(0.18, 0.4), p(0.24, 0.66), p(0.21, 0.86), p(0.14, 0.86), p(0.1, 0.64), p(0.1, 0.42)],
-      [p(0.36, 0.26), p(0.52, 0.3), p(0.6, 0.34), p(0.67, 0.46), p(0.69, 0.58), p(0.62, 0.72), p(0.53, 0.76), p(0.45, 0.72), p(0.37, 0.8), p(0.28, 0.84), p(0.2, 0.8), p(0.18, 0.66), p(0.21, 0.54), p(0.26, 0.38)],
-      [p(0.74, 0.34), p(0.79, 0.42), p(0.85, 0.48), p(0.89, 0.62), p(0.86, 0.76), p(0.82, 0.9), p(0.76, 0.8), p(0.72, 0.68), p(0.71, 0.56)],
-    ];
+    const yaw = this.rotationY;
+    const pitch = this.rotationX;
 
-    this.routes = [
-      {
-        type: 'pipeline',
-        points: this.generateCurve(node('ras'), p(0.42, 0.52), node('yanbu'), 24),
-        color: '#34d399',
-        glowColor: 'rgba(52, 211, 153, 0.24)',
-        width: 4,
-        dashed: false,
-        blocked: false,
-        flow: true,
-      },
-      {
-        type: 'active',
-        points: this.generateCurve(node('fujairah'), p(0.67, 0.54), node('jamnagar'), 20),
-        color: '#22d3ee',
-        glowColor: 'rgba(34, 211, 238, 0.24)',
-        width: 2.3,
-        dashed: false,
-        blocked: false,
-        flow: true,
-      },
-      {
-        type: 'blocked',
-        points: this.generateCurve(node('ras'), p(0.545, 0.49), node('hormuz'), 16),
-        color: '#ef4444',
-        glowColor: 'rgba(239, 68, 68, 0.3)',
-        width: 2,
-        dashed: true,
-        blocked: true,
-        flow: false,
-      },
-      {
-        type: 'cape',
-        points: this.generateMultiCurve([
-          p(0.52, 0.5),
-          p(0.45, 0.67),
-          p(0.3, 0.82),
-          p(0.22, 0.9),
-          node('cape'),
-          p(0.1, 0.78),
-          p(0.12, 0.56),
-          p(0.16, 0.36),
-          node('suez'),
-        ], 55),
-        color: '#a855f7',
-        glowColor: 'rgba(168, 85, 247, 0.2)',
-        width: 2,
-        dashed: true,
-        blocked: false,
-        flow: true,
-      },
-    ];
+    const x1 = x0 * Math.cos(yaw) - z0 * Math.sin(yaw);
+    const z1 = x0 * Math.sin(yaw) + z0 * Math.cos(yaw);
+    const y1 = y0;
 
-    this.routes.forEach((route) => {
-      route.travelingParticles = [];
-      if (route.flow) {
-        for (let i = 0; i < 3; i++) {
-          route.travelingParticles.push({
-            progress: Math.random(),
-            speed: 0.0018 + Math.random() * 0.0025,
-          });
-        }
+    const y2 = y1 * Math.cos(pitch) - z1 * Math.sin(pitch);
+    const z2 = y1 * Math.sin(pitch) + z1 * Math.cos(pitch);
+    const x2 = x1;
+
+    const depth = (z2 + 1) / 2;
+    const perspective = 0.5 + depth * 0.75;
+    const radius = this.radius * radiusBoost;
+
+    return {
+      x: this.heroCenter.x + x2 * radius * perspective,
+      y: this.heroCenter.y - y2 * radius * perspective,
+      z: z2,
+      depth,
+      visible: z2 > -0.3,
+    };
+  }
+
+  interpolateGeoPoint(start, end, t) {
+    const p = (node) => {
+      const lat = (node.lat * Math.PI) / 180;
+      const lon = (node.lon * Math.PI) / 180;
+      return {
+        x: Math.cos(lat) * Math.cos(lon),
+        y: Math.sin(lat),
+        z: Math.cos(lat) * Math.sin(lon),
+      };
+    };
+
+    const a = p(start);
+    const b = p(end);
+    const omega = Math.acos(Math.max(-1, Math.min(1, a.x * b.x + a.y * b.y + a.z * b.z)));
+    if (omega === 0) {
+      return { lat: start.lat, lon: start.lon };
+    }
+
+    const s1 = Math.sin((1 - t) * omega) / Math.sin(omega);
+    const s2 = Math.sin(t * omega) / Math.sin(omega);
+    const x = a.x * s1 + b.x * s2;
+    const y = a.y * s1 + b.y * s2;
+    const z = a.z * s1 + b.z * s2;
+
+    return {
+      lat: (Math.atan2(y, Math.sqrt(x * x + z * z)) * 180) / Math.PI,
+      lon: (Math.atan2(z, x) * 180) / Math.PI,
+    };
+  }
+
+  drawGlobeShell() {
+    const r = this.radius;
+    const cx = this.heroCenter.x;
+    const cy = this.heroCenter.y;
+
+    const core = this.ctx.createRadialGradient(cx - r * 0.25, cy - r * 0.35, r * 0.15, cx, cy, r);
+    core.addColorStop(0, 'rgba(25, 56, 104, 0.35)');
+    core.addColorStop(0.55, 'rgba(12, 28, 54, 0.28)');
+    core.addColorStop(1, 'rgba(7, 15, 30, 0.05)');
+    this.ctx.fillStyle = core;
+    this.ctx.beginPath();
+    this.ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    this.ctx.fill();
+
+    this.ctx.strokeStyle = 'rgba(86, 154, 255, 0.15)';
+    this.ctx.lineWidth = 1.1;
+    this.ctx.beginPath();
+    this.ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    this.ctx.stroke();
+  }
+
+  drawLatitudeLongitude() {
+    const latLines = [-60, -30, 0, 30, 60];
+    const lonLines = [-120, -80, -40, 0, 40, 80, 120];
+
+    latLines.forEach((lat) => {
+      this.ctx.beginPath();
+      for (let lon = -180; lon <= 180; lon += 4) {
+        const pt = this.project(lat, lon);
+        if (lon === -180) this.ctx.moveTo(pt.x, pt.y);
+        else this.ctx.lineTo(pt.x, pt.y);
       }
+      this.ctx.strokeStyle = lat === 0 ? 'rgba(88, 170, 255, 0.2)' : 'rgba(88, 170, 255, 0.1)';
+      this.ctx.lineWidth = lat === 0 ? 1.2 : 0.8;
+      this.ctx.stroke();
+    });
+
+    lonLines.forEach((lon) => {
+      this.ctx.beginPath();
+      for (let lat = -80; lat <= 80; lat += 4) {
+        const pt = this.project(lat, lon);
+        if (lat === -80) this.ctx.moveTo(pt.x, pt.y);
+        else this.ctx.lineTo(pt.x, pt.y);
+      }
+      this.ctx.strokeStyle = 'rgba(88, 170, 255, 0.09)';
+      this.ctx.lineWidth = 0.7;
+      this.ctx.stroke();
     });
   }
 
-  generateCurve(start, control, end, segments) {
-    const points = [];
-    for (let i = 0; i <= segments; i++) {
-      const t = i / segments;
-      const x = (1 - t) * (1 - t) * start.x + 2 * (1 - t) * t * control.x + t * t * end.x;
-      const y = (1 - t) * (1 - t) * start.y + 2 * (1 - t) * t * control.y + t * t * end.y;
-      points.push({ x, y });
-    }
-    return points;
-  }
+  drawRoute(route, progressOffset = null) {
+    const startNode = this.nodes[route.from];
+    const endNode = this.nodes[route.to];
+    if (!startNode || !endNode) return;
 
-  generateMultiCurve(waypoints, totalSegments) {
-    const points = [];
-    const segPerSection = Math.floor(totalSegments / (waypoints.length - 1));
-    for (let i = 0; i < waypoints.length - 1; i++) {
-      const start = waypoints[i];
-      const end = waypoints[i + 1];
-      const mid = {
-        x: (start.x + end.x) / 2 + (Math.random() - 0.5) * 26,
-        y: (start.y + end.y) / 2 + (Math.random() - 0.5) * 26,
-      };
-      for (let j = 0; j <= segPerSection; j++) {
-        const t = j / segPerSection;
-        const x = (1 - t) * (1 - t) * start.x + 2 * (1 - t) * t * mid.x + t * t * end.x;
-        const y = (1 - t) * (1 - t) * start.y + 2 * (1 - t) * t * mid.y + t * t * end.y;
-        points.push({ x, y });
+    const samples = [];
+    const segmentCount = 46;
+
+    const drawSegment = (fromNode, toNode, tStart, tEnd) => {
+      for (let i = 0; i <= segmentCount; i++) {
+        const localT = i / segmentCount;
+        const worldT = tStart + localT * (tEnd - tStart);
+        const geo = this.interpolateGeoPoint(fromNode, toNode, localT);
+        const lift = 1 + Math.sin(localT * Math.PI) * route.arcHeight;
+        const pt = this.project(geo.lat, geo.lon, lift);
+        samples.push({ ...pt, t: worldT });
+      }
+    };
+
+    if (route.via) {
+      const viaNode = this.nodes[route.via];
+      drawSegment(startNode, viaNode, 0, 0.5);
+      drawSegment(viaNode, endNode, 0.5, 1);
+    } else {
+      drawSegment(startNode, endNode, 0, 1);
+    }
+
+    this.ctx.beginPath();
+    samples.forEach((pt, i) => {
+      if (i === 0) this.ctx.moveTo(pt.x, pt.y);
+      else this.ctx.lineTo(pt.x, pt.y);
+    });
+    this.ctx.strokeStyle = route.color;
+    this.ctx.lineWidth = route.width;
+    if (route.dashed) {
+      this.ctx.setLineDash([7, 6]);
+      this.ctx.lineDashOffset = -this.time * 45;
+    }
+    this.ctx.globalAlpha = 0.35;
+    this.ctx.stroke();
+    this.ctx.setLineDash([]);
+    this.ctx.globalAlpha = 1;
+
+    this.ctx.beginPath();
+    samples.forEach((pt, i) => {
+      if (i === 0) this.ctx.moveTo(pt.x, pt.y);
+      else this.ctx.lineTo(pt.x, pt.y);
+    });
+    const glow = this.ctx.createLinearGradient(samples[0].x, samples[0].y, samples[samples.length - 1].x, samples[samples.length - 1].y);
+    glow.addColorStop(0, `${route.color}66`);
+    glow.addColorStop(0.5, `${route.color}CC`);
+    glow.addColorStop(1, `${route.color}66`);
+    this.ctx.strokeStyle = glow;
+    this.ctx.lineWidth = route.width + 0.8;
+    this.ctx.stroke();
+
+    if (progressOffset !== null) {
+      const marker = samples[Math.floor(progressOffset * (samples.length - 1))];
+      if (marker) {
+        this.ctx.beginPath();
+        this.ctx.arc(marker.x, marker.y, 3.2, 0, Math.PI * 2);
+        this.ctx.fillStyle = '#f8fafc';
+        this.ctx.fill();
+        this.ctx.beginPath();
+        this.ctx.arc(marker.x, marker.y, 8, 0, Math.PI * 2);
+        this.ctx.fillStyle = `${route.color}44`;
+        this.ctx.fill();
       }
     }
-    return points;
   }
 
-  drawGrid() {
-    const w = this.canvas.width;
-    const h = this.canvas.height;
-    const major = Math.max(90, Math.floor(w / 12));
-    const minor = Math.floor(major / 3);
+  drawNodes() {
+    Object.values(this.nodes).forEach((node) => {
+      const p = this.project(node.lat, node.lon, 1.02);
+      if (!p.visible || p.x < this.canvas.width * 0.43) return;
 
-    this.ctx.lineWidth = 1;
-    for (let x = 0; x < w; x += minor) {
-      const isMajor = x % major === 0;
-      this.ctx.strokeStyle = isMajor ? 'rgba(59, 130, 246, 0.09)' : 'rgba(59, 130, 246, 0.04)';
+      const size = 2 + p.depth * 3;
       this.ctx.beginPath();
-      this.ctx.moveTo(x, 0);
-      this.ctx.lineTo(x, h);
-      this.ctx.stroke();
-    }
-
-    for (let y = 0; y < h; y += minor) {
-      const isMajor = y % major === 0;
-      this.ctx.strokeStyle = isMajor ? 'rgba(59, 130, 246, 0.09)' : 'rgba(59, 130, 246, 0.04)';
-      this.ctx.beginPath();
-      this.ctx.moveTo(0, y);
-      this.ctx.lineTo(w, y);
-      this.ctx.stroke();
-    }
-  }
-
-  drawLandmasses() {
-    this.landmasses.forEach((shape) => {
-      this.ctx.beginPath();
-      shape.forEach((point, i) => {
-        if (i === 0) this.ctx.moveTo(point.x, point.y);
-        else this.ctx.lineTo(point.x, point.y);
-      });
-      this.ctx.closePath();
-      this.ctx.fillStyle = 'rgba(20, 34, 58, 0.43)';
+      this.ctx.arc(p.x, p.y, size + 4, 0, Math.PI * 2);
+      this.ctx.fillStyle = `${node.color}33`;
       this.ctx.fill();
-      this.ctx.strokeStyle = 'rgba(94, 121, 163, 0.14)';
-      this.ctx.lineWidth = 1.2;
-      this.ctx.stroke();
+
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+      this.ctx.fillStyle = node.color;
+      this.ctx.fill();
+
+      this.ctx.font = '600 10px "JetBrains Mono", monospace';
+      this.ctx.fillStyle = 'rgba(187, 204, 229, 0.7)';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText(node.name, p.x + 10, p.y - 6);
     });
   }
 
   drawLegend() {
-    const x = this.canvas.width * 0.54;
+    const x = this.canvas.width * 0.58;
     const y = this.canvas.height * 0.2;
     const items = [
-      { label: 'Overland Pipeline Bypass', color: '#34d399' },
-      { label: 'Active Tanker Lane', color: '#22d3ee' },
-      { label: 'Cape Detour (+14-18d)', color: '#a855f7', dashed: true },
-      { label: 'Chokepoint Blockade', color: '#ef4444' },
+      { label: 'Pipeline Bypass', color: '#34d399' },
+      { label: 'Active Tanker', color: '#22d3ee' },
+      { label: 'Cape Detour', color: '#a855f7', dashed: true },
+      { label: 'Blockade', color: '#ef4444' },
     ];
 
-    this.ctx.fillStyle = 'rgba(9, 18, 35, 0.7)';
-    this.ctx.strokeStyle = 'rgba(120, 145, 185, 0.18)';
+    this.ctx.fillStyle = 'rgba(9, 18, 35, 0.6)';
+    this.ctx.strokeStyle = 'rgba(120, 145, 185, 0.14)';
     this.ctx.lineWidth = 1;
     this.ctx.beginPath();
-    this.ctx.roundRect(x - 16, y - 20, 392, 44, 12);
+    this.ctx.roundRect(x - 12, y - 18, 320, 36, 10);
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -240,121 +349,24 @@ class GlobeAnimation {
       this.ctx.stroke();
       this.ctx.setLineDash([]);
 
-      this.ctx.font = '600 11px "JetBrains Mono", monospace';
-      this.ctx.fillStyle = 'rgba(200, 214, 236, 0.85)';
-      this.ctx.textAlign = 'left';
-      this.ctx.fillText(item.label, cursorX + 20, y + 4);
-      cursorX += this.ctx.measureText(item.label).width + 34;
-    });
-  }
-
-  drawRegions() {
-    const labels = [
-      { text: 'PERSIAN GULF', x: 0.62, y: 0.44 },
-      { text: 'ARABIAN SEA', x: 0.74, y: 0.78 },
-    ];
-
-    this.ctx.font = '700 12px "JetBrains Mono", monospace';
-    this.ctx.fillStyle = 'rgba(46, 169, 255, 0.24)';
-    this.ctx.textAlign = 'center';
-    labels.forEach((label) => {
-      this.ctx.fillText(label.text, this.canvas.width * label.x, this.canvas.height * label.y);
-    });
-  }
-
-  drawRoutes() {
-    this.routes.forEach((route) => {
-      this.ctx.lineCap = 'round';
-      this.ctx.lineJoin = 'round';
-
-      // Glow pass
-      this.ctx.strokeStyle = route.glowColor;
-      this.ctx.lineWidth = route.width + 5;
-      this.ctx.beginPath();
-      route.points.forEach((point, i) => {
-        if (i === 0) this.ctx.moveTo(point.x, point.y);
-        else this.ctx.lineTo(point.x, point.y);
-      });
-      this.ctx.stroke();
-
-      // Main path
-      if (route.dashed) {
-        this.ctx.setLineDash([7, 6]);
-        this.ctx.lineDashOffset = -this.time * 35;
-      } else {
-        this.ctx.setLineDash([]);
-      }
-      this.ctx.strokeStyle = route.color;
-      this.ctx.lineWidth = route.width;
-      this.ctx.beginPath();
-      route.points.forEach((point, i) => {
-        if (i === 0) this.ctx.moveTo(point.x, point.y);
-        else this.ctx.lineTo(point.x, point.y);
-      });
-      this.ctx.stroke();
-      this.ctx.setLineDash([]);
-
-      // Traveling flow particles
-      route.travelingParticles.forEach((flowParticle) => {
-        flowParticle.progress += flowParticle.speed;
-        if (flowParticle.progress > 1) flowParticle.progress = 0;
-
-        const idx = Math.floor(flowParticle.progress * (route.points.length - 1));
-        const point = route.points[idx];
-        if (!point) return;
-
-        this.ctx.beginPath();
-        this.ctx.arc(point.x, point.y, 3.3, 0, Math.PI * 2);
-        this.ctx.fillStyle = '#e2e8f0';
-        this.ctx.fill();
-
-        this.ctx.beginPath();
-        this.ctx.arc(point.x, point.y, 7.5, 0, Math.PI * 2);
-        this.ctx.fillStyle = route.glowColor;
-        this.ctx.fill();
-      });
-    });
-  }
-
-  drawNodes() {
-    this.nodes.forEach((node) => {
-      this.ctx.beginPath();
-      this.ctx.arc(node.x, node.y, node.size + 4, 0, Math.PI * 2);
-      this.ctx.fillStyle = `${node.color}22`;
-      this.ctx.fill();
-
-      this.ctx.beginPath();
-      this.ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = node.color;
-      this.ctx.fill();
-
-      this.ctx.beginPath();
-      this.ctx.arc(node.x, node.y, node.size + 1.5, 0, Math.PI * 2);
-      this.ctx.strokeStyle = 'rgba(236, 246, 255, 0.65)';
-      this.ctx.lineWidth = 1;
-      this.ctx.stroke();
-
       this.ctx.font = '600 10px "JetBrains Mono", monospace';
-      this.ctx.fillStyle = 'rgba(181, 196, 220, 0.72)';
-      if (node.labelAlign === 'left') {
-        this.ctx.textAlign = 'left';
-        this.ctx.fillText(node.label, node.x + 10, node.y - 8);
-      } else {
-        this.ctx.textAlign = 'right';
-        this.ctx.fillText(node.label, node.x - 10, node.y - 8);
-      }
+      this.ctx.fillStyle = 'rgba(200, 214, 236, 0.74)';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText(item.label, cursorX + 20, y + 3);
+      cursorX += this.ctx.measureText(item.label).width + 18;
     });
   }
 
   drawBlockade() {
-    const marker = this.nodes.find((node) => node.key === 'hormuz');
-    if (!marker) return;
+    const markerNode = this.nodes.hormuz;
+    const marker = this.project(markerNode.lat, markerNode.lon, 1.04);
+    if (!marker.visible) return;
 
-    const pulse = Math.sin(this.time * 2.8) * 10 + 22;
+    const pulse = Math.sin(this.time * 2.4) * 8 + 18;
 
     this.ctx.beginPath();
     this.ctx.arc(marker.x, marker.y, pulse, 0, Math.PI * 2);
-    this.ctx.fillStyle = `rgba(239, 68, 68, ${0.08 + Math.sin(this.time * 2.8) * 0.03})`;
+    this.ctx.fillStyle = `rgba(239, 68, 68, ${0.07 + Math.sin(this.time * 2.8) * 0.03})`;
     this.ctx.fill();
 
     this.ctx.beginPath();
@@ -366,20 +378,51 @@ class GlobeAnimation {
     this.ctx.stroke();
     this.ctx.setLineDash([]);
 
-    const badgeX = marker.x - 66;
+    const badgeX = marker.x - 56;
     const badgeY = marker.y - 72;
-    this.ctx.fillStyle = 'rgba(127, 29, 29, 0.78)';
-    this.ctx.strokeStyle = 'rgba(239, 68, 68, 0.65)';
+    this.ctx.fillStyle = 'rgba(127, 29, 29, 0.62)';
+    this.ctx.strokeStyle = 'rgba(239, 68, 68, 0.5)';
     this.ctx.lineWidth = 1;
     this.ctx.beginPath();
-    this.ctx.roundRect(badgeX, badgeY, 132, 24, 6);
+    this.ctx.roundRect(badgeX, badgeY, 112, 22, 6);
     this.ctx.fill();
     this.ctx.stroke();
 
-    this.ctx.font = '700 10px "JetBrains Mono", monospace';
+    this.ctx.font = '700 9px "JetBrains Mono", monospace';
     this.ctx.fillStyle = '#fecaca';
     this.ctx.textAlign = 'center';
-    this.ctx.fillText('HORMUZ BLOCKED', marker.x, badgeY + 16);
+    this.ctx.fillText('BLOCKED', marker.x, badgeY + 14);
+  }
+
+  drawStars() {
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    this.stars.forEach((star) => {
+      const x = star.x * w;
+      const y = star.y * h;
+      const alpha = 0.08 + star.z * 0.2 + (Math.sin(this.time * 0.8 + star.pulse) + 1) * 0.06;
+      const size = star.size * (0.7 + star.z * 0.8);
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, size, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(122, 150, 191, ${alpha})`;
+      this.ctx.fill();
+    });
+  }
+
+  drawGlobalGlow() {
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const wash = this.ctx.createRadialGradient(this.heroCenter.x, this.heroCenter.y, this.radius * 0.15, this.heroCenter.x, this.heroCenter.y, this.radius * 1.35);
+    wash.addColorStop(0, 'rgba(33, 83, 157, 0.22)');
+    wash.addColorStop(1, 'rgba(7, 14, 28, 0)');
+    this.ctx.fillStyle = wash;
+    this.ctx.fillRect(0, 0, w, h);
+
+    const leftMask = this.ctx.createLinearGradient(0, 0, w * 0.55, 0);
+    leftMask.addColorStop(0, 'rgba(10, 14, 26, 0.82)');
+    leftMask.addColorStop(1, 'rgba(10, 14, 26, 0)');
+    this.ctx.fillStyle = leftMask;
+    this.ctx.fillRect(0, 0, w * 0.58, h);
   }
 
   animate() {
@@ -388,33 +431,34 @@ class GlobeAnimation {
 
     const w = this.canvas.width;
     const h = this.canvas.height;
+    this.rotationY += 0.0016;
+    this.rotationX += (this.pointerInfluenceY - this.rotationX) * 0.01;
+    const targetYawDrift = this.rotationY + this.pointerInfluenceX * 0.01;
+    this.rotationY += (targetYawDrift - this.rotationY) * 0.04;
 
-    const bg = this.ctx.createRadialGradient(w * 0.62, h * 0.48, 120, w * 0.55, h * 0.5, w * 0.82);
-    bg.addColorStop(0, 'rgba(14, 30, 58, 0.32)');
-    bg.addColorStop(1, 'rgba(3, 8, 20, 0.05)');
+    const bg = this.ctx.createRadialGradient(w * 0.73, h * 0.5, 80, w * 0.73, h * 0.5, w * 0.7);
+    bg.addColorStop(0, 'rgba(20, 50, 97, 0.24)');
+    bg.addColorStop(1, 'rgba(3, 8, 20, 0.03)');
     this.ctx.fillStyle = bg;
     this.ctx.fillRect(0, 0, w, h);
 
-    this.ctx.save();
-    this.ctx.globalAlpha = 0.82;
+    this.drawStars();
+    this.drawGlobeShell();
+    this.drawLatitudeLongitude();
 
-    this.drawGrid();
-    this.drawLandmasses();
-
-    this.particles.forEach((particle) => {
-      const pulse = Math.sin(this.time * particle.pulseSpeed * 90) * 0.3 + 0.72;
-      this.ctx.beginPath();
-      this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(123, 149, 192, ${particle.opacity * pulse})`;
-      this.ctx.fill();
+    this.routes.forEach((route) => {
+      const flow = this.routeParticles.find((particle) => particle.routeKey === route.key);
+      if (flow) {
+        flow.progress += flow.speed;
+        if (flow.progress > 1) flow.progress = 0;
+      }
+      this.drawRoute(route, flow ? flow.progress : null);
     });
 
-    this.drawRegions();
-    this.drawRoutes();
     this.drawNodes();
     this.drawBlockade();
     this.drawLegend();
-    this.ctx.restore();
+    this.drawGlobalGlow();
 
     this.animationFrame = requestAnimationFrame(() => this.animate());
   }
@@ -423,6 +467,8 @@ class GlobeAnimation {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
     }
+    window.removeEventListener('pointermove', this.handlePointerMove);
+    window.removeEventListener('pointerleave', this.handlePointerLeave);
   }
 }
 
@@ -821,6 +867,31 @@ function initScrollProgress() {
   });
 }
 
+// ─── Hero Warroom 3D Tilt ───
+function initHeroCardTilt() {
+  const hero = document.querySelector('.hero');
+  const card = document.querySelector('.hero-warroom');
+  if (!hero || !card) return;
+
+  const maxTilt = 6;
+
+  hero.addEventListener('pointermove', (event) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / Math.max(rect.width, 1);
+    const y = (event.clientY - rect.top) / Math.max(rect.height, 1);
+    const rotateY = (x - 0.5) * maxTilt;
+    const rotateX = (0.5 - y) * maxTilt;
+
+    card.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(10px)`;
+    card.style.boxShadow = `${-rotateY * 1.2}px ${rotateX * 1.4}px 46px rgba(0, 0, 0, 0.48), 0 0 80px rgba(245, 158, 11, 0.1)`;
+  });
+
+  hero.addEventListener('pointerleave', () => {
+    card.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+    card.style.boxShadow = 'var(--shadow-lg), 0 0 70px rgba(245, 158, 11, 0.08)';
+  });
+}
+
 // ─── Navigation ───
 function initNavigation() {
   const nav = document.getElementById('nav');
@@ -876,6 +947,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initProductTabs();
   initNavigation();
   initScrollProgress();
+  initHeroCardTilt();
 
   // Re-initialize lucide icons after DOM is ready
   if (window.lucide) {

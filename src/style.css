@@ -502,6 +502,7 @@ ul { list-style: none; }
   grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1fr);
   gap: var(--space-3xl);
   align-items: center;
+  perspective: 1400px;
 }
 
 .hero__copy {
@@ -697,6 +698,9 @@ ul { list-style: none; }
 .hero-warroom__status {
   flex-shrink: 0;
   padding: 5px 12px;
+  transform-style: preserve-3d;
+  transition: transform 180ms ease, box-shadow 240ms ease;
+  will-change: transform;
   border-radius: var(--radius-full);
   color: var(--success);
   background: var(--success-glow);
