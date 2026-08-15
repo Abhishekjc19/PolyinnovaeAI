@@ -51,16 +51,17 @@ class GlobeAnimation {
   buildScene() {
     const w = this.canvas.width;
     const h = this.canvas.height;
-    const p = (nx, ny) => ({ x: w * nx, y: h * ny });
+    const xMap = (nx) => 0.28 + nx * 0.68;
+    const p = (nx, ny) => ({ x: w * xMap(nx), y: h * ny });
 
     this.nodes = [
-      { key: 'yanbu', label: 'Yanbu (7.0 Mbpd)', ...p(0.34, 0.55), color: '#2dd4bf', size: 6 },
-      { key: 'ras', label: 'Ras Tanura', ...p(0.5, 0.48), color: '#60a5fa', size: 5 },
-      { key: 'hormuz', label: 'Hormuz', ...p(0.57, 0.5), color: '#ef4444', size: 6 },
-      { key: 'fujairah', label: 'Fujairah (1.8 Mbpd)', ...p(0.615, 0.56), color: '#2dd4bf', size: 6 },
-      { key: 'jamnagar', label: 'Jamnagar', ...p(0.72, 0.52), color: '#22d3ee', size: 6 },
-      { key: 'cape', label: 'Cape Route (+14-18d)', ...p(0.18, 0.8), color: '#a855f7', size: 5 },
-      { key: 'suez', label: 'Suez', ...p(0.43, 0.28), color: '#34d399', size: 5 },
+      { key: 'yanbu', label: 'Yanbu (7.0 Mbpd)', ...p(0.34, 0.55), color: '#2dd4bf', size: 6, labelAlign: 'right' },
+      { key: 'ras', label: 'Ras Tanura', ...p(0.5, 0.48), color: '#60a5fa', size: 5, labelAlign: 'right' },
+      { key: 'hormuz', label: 'Hormuz', ...p(0.57, 0.5), color: '#ef4444', size: 6, labelAlign: 'right' },
+      { key: 'fujairah', label: 'Fujairah (1.8 Mbpd)', ...p(0.615, 0.56), color: '#2dd4bf', size: 6, labelAlign: 'right' },
+      { key: 'jamnagar', label: 'Jamnagar', ...p(0.72, 0.52), color: '#22d3ee', size: 6, labelAlign: 'left' },
+      { key: 'cape', label: 'Cape Route (+14-18d)', ...p(0.18, 0.8), color: '#a855f7', size: 5, labelAlign: 'right' },
+      { key: 'suez', label: 'Suez', ...p(0.43, 0.28), color: '#34d399', size: 5, labelAlign: 'right' },
     ];
 
     const node = (key) => this.nodes.find((n) => n.key === key);
@@ -211,7 +212,7 @@ class GlobeAnimation {
   }
 
   drawLegend() {
-    const x = this.canvas.width * 0.06;
+    const x = this.canvas.width * 0.54;
     const y = this.canvas.height * 0.2;
     const items = [
       { label: 'Overland Pipeline Bypass', color: '#34d399' },
@@ -224,7 +225,7 @@ class GlobeAnimation {
     this.ctx.strokeStyle = 'rgba(120, 145, 185, 0.18)';
     this.ctx.lineWidth = 1;
     this.ctx.beginPath();
-    this.ctx.roundRect(x - 16, y - 20, 420, 44, 12);
+    this.ctx.roundRect(x - 16, y - 20, 392, 44, 12);
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -243,20 +244,18 @@ class GlobeAnimation {
       this.ctx.fillStyle = 'rgba(200, 214, 236, 0.85)';
       this.ctx.textAlign = 'left';
       this.ctx.fillText(item.label, cursorX + 20, y + 4);
-      cursorX += this.ctx.measureText(item.label).width + 46;
+      cursorX += this.ctx.measureText(item.label).width + 34;
     });
   }
 
   drawRegions() {
     const labels = [
-      { text: 'MEDITERRANEAN', x: 0.38, y: 0.26 },
-      { text: 'RED SEA', x: 0.2, y: 0.52 },
-      { text: 'PERSIAN GULF', x: 0.5, y: 0.44 },
-      { text: 'ARABIAN SEA', x: 0.67, y: 0.78 },
+      { text: 'PERSIAN GULF', x: 0.62, y: 0.44 },
+      { text: 'ARABIAN SEA', x: 0.74, y: 0.78 },
     ];
 
     this.ctx.font = '700 12px "JetBrains Mono", monospace';
-    this.ctx.fillStyle = 'rgba(46, 169, 255, 0.38)';
+    this.ctx.fillStyle = 'rgba(46, 169, 255, 0.24)';
     this.ctx.textAlign = 'center';
     labels.forEach((label) => {
       this.ctx.fillText(label.text, this.canvas.width * label.x, this.canvas.height * label.y);
@@ -336,9 +335,14 @@ class GlobeAnimation {
       this.ctx.stroke();
 
       this.ctx.font = '600 10px "JetBrains Mono", monospace';
-      this.ctx.fillStyle = 'rgba(181, 196, 220, 0.85)';
-      this.ctx.textAlign = 'left';
-      this.ctx.fillText(node.label, node.x + 10, node.y - 8);
+      this.ctx.fillStyle = 'rgba(181, 196, 220, 0.72)';
+      if (node.labelAlign === 'left') {
+        this.ctx.textAlign = 'left';
+        this.ctx.fillText(node.label, node.x + 10, node.y - 8);
+      } else {
+        this.ctx.textAlign = 'right';
+        this.ctx.fillText(node.label, node.x - 10, node.y - 8);
+      }
     });
   }
 
@@ -391,6 +395,9 @@ class GlobeAnimation {
     this.ctx.fillStyle = bg;
     this.ctx.fillRect(0, 0, w, h);
 
+    this.ctx.save();
+    this.ctx.globalAlpha = 0.82;
+
     this.drawGrid();
     this.drawLandmasses();
 
@@ -407,6 +414,7 @@ class GlobeAnimation {
     this.drawNodes();
     this.drawBlockade();
     this.drawLegend();
+    this.ctx.restore();
 
     this.animationFrame = requestAnimationFrame(() => this.animate());
   }
